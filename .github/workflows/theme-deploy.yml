@@ -1,0 +1,65 @@
+name: Theme — deploy Nuvemshop
+
+on:
+  pull_request:
+    paths: ["theme/**"]
+  push:
+    branches: [main]
+    paths: ["theme/**"]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publicar como tema ativo após o push em produção"
+        type: boolean
+        default: false
+
+concurrency:
+  group: theme-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  diff:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i -g @tiendanube/cli
+      - name: Diff contra HOMOLOG
+        working-directory: theme
+        run: nuvemshop theme diff --theme-id "${{ secrets.THEME_ID_HOMOLOG }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" --detailed
+
+  homolog:
+    if: github.event_name == 'pull_request'
+    needs: diff
+    runs-on: ubuntu-latest
+    environment: homolog
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i -g @tiendanube/cli
+      - name: Push para HOMOLOG
+        working-directory: theme
+        run: nuvemshop theme push --theme-id "${{ secrets.THEME_ID_HOMOLOG }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" -y
+      - name: URL de preview
+        working-directory: theme
+        run: nuvemshop theme preview --theme-id "${{ secrets.THEME_ID_HOMOLOG }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}"
+
+  prod:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i -g @tiendanube/cli
+      - name: Push para PROD
+        working-directory: theme
+        run: nuvemshop theme push --theme-id "${{ secrets.THEME_ID_PROD }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" -y
+      - name: Publicar (opcional)
+        if: inputs.publish == true
+        working-directory: theme
+        run: nuvemshop theme publish --theme-id "${{ secrets.THEME_ID_PROD }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" -y
