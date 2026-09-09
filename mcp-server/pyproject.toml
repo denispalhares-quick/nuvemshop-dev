@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nuvemshop-dev-mcp"
 version = "0.1.0"
-description = "MCP server da Nuvemshop (Admin API + webhooks + tema via CLI) — Acta Publicidade"
-authors = [{name = "Denis Palhares / Acta Publicidade"}, {name = "Alexandre Proença (upstream)"}]
+description = "MCP server da Nuvemshop — Admin API, webhooks e tema via CLI"
+authors = [{name = "Denis Palhares Gonçalves", email = "denis.palhares22@gmail.com"}]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.11"

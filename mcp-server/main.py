@@ -108,7 +108,7 @@ def get_config() -> TiendanubeConfig:
     access_token = os.getenv("TIENDANUBE_ACCESS_TOKEN", "")
     store_id = os.getenv("TIENDANUBE_STORE_ID", "")
     base_url = os.getenv("TIENDANUBE_BASE_URL", "https://api.nuvemshop.com.br/2025-03")
-    user_agent = os.getenv("TIENDANUBE_USER_AGENT", "nuvemshop-dev-mcp (contato@actapublicidade.com.br)")
+    user_agent = os.getenv("TIENDANUBE_USER_AGENT", "nuvemshop-dev-mcp (denis.palhares22@gmail.com)")
 
     if not access_token:
         raise ValueError("TIENDANUBE_ACCESS_TOKEN environment variable is required")

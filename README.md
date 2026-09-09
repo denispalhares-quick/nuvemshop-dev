@@ -1,10 +1,10 @@
 # nuvemshop-dev
 
-Kit de desenvolvimento Nuvemshop da Acta Publicidade: um **servidor MCP** (catálogo, pedidos, clientes, cupons, **webhooks** e **tema**) + **tema versionado em git** com **deploy por CI**.
+Kit de desenvolvimento Nuvemshop: um **servidor MCP** (catálogo, pedidos, clientes, cupons, **webhooks** e **tema**) + **tema versionado em git** com **deploy por CI**.
 
 > **Status:** repo pronto para uso, ainda não rodado contra uma loja real. O primeiro projeto que usar isto deve validar os pontos listados em [Pendências](#pendências).
 
-Base: fork de [AlexandreProenca/nuvemshop-mcp-server](https://github.com/AlexandreProenca/nuvemshop-mcp-server) (MIT), com:
+Construído sobre o [nuvemshop-mcp-server](https://github.com/AlexandreProenca/nuvemshop-mcp-server) (MIT), com:
 
 - credenciais só por variável de ambiente (o upstream tinha token fixo no código);
 - tools de **webhooks** (`list/get/create/update/delete_webhook`, `list_webhook_events`);
