@@ -54,6 +54,7 @@ class TiendanubeConfig:
     def headers(self) -> dict[str, Any]:
         return {
             "Authentication": f"bearer {self.access_token}",
+            "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json",
             "User-Agent": f"{self.user_agent}"
         }

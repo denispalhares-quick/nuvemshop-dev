@@ -2,6 +2,8 @@
 
 Kit de desenvolvimento Nuvemshop da Acta Publicidade: um **servidor MCP** (catálogo, pedidos, clientes, cupons, **webhooks** e **tema**) + **tema versionado em git** com **deploy por CI**.
 
+> **Status:** repo pronto para uso, ainda não rodado contra uma loja real. O primeiro projeto que usar isto deve validar os pontos listados em [Pendências](#pendências).
+
 Base: fork de [AlexandreProenca/nuvemshop-mcp-server](https://github.com/AlexandreProenca/nuvemshop-mcp-server) (MIT), com:
 
 - credenciais só por variável de ambiente (o upstream tinha token fixo no código);
@@ -12,13 +14,114 @@ Base: fork de [AlexandreProenca/nuvemshop-mcp-server](https://github.com/Alexand
 
 ```
 nuvemshop-dev/
-├── mcp-server/           servidor MCP (Python) — main.py + extensions/{webhooks,theme}.py
-├── theme/                tema da loja (pull via CLI) — versionado aqui
-├── scripts/theme-push.sh deploy manual: homolog | prod [--publish]
-├── .github/workflows/    theme-deploy.yml
-├── .mcp.json             config para Claude Code (raiz do projeto)
+├── mcp-server/            servidor MCP (Python) — main.py + extensions/{webhooks,theme}.py
+├── theme/                 tema da loja (pull via CLI) — versionado aqui
+├── scripts/
+│   ├── get-token.py       troca o code do OAuth pelo access_token e grava no .env
+│   └── theme-push.sh      deploy manual: homolog | prod [--publish]
+├── .github/workflows/     theme-deploy.yml
+├── .mcp.json              config para Claude Code (raiz do projeto)
 └── claude-desktop.example.json
 ```
+
+---
+
+## Começando uma loja do zero
+
+Passo a passo completo. Marque conforme for fazendo — o que trava a maioria das pessoas é o passo 2.
+
+### 1. Ferramentas
+
+```bash
+cd mcp-server && pip install -r requirements.txt && cd ..
+npm install -g @tiendanube/cli
+nuvemshop --version          # confirma a instalação (o comando `tiendanube` é equivalente)
+```
+
+Requisitos: Python 3.11+, Node 18+.
+
+### 2. Credenciais da Admin API (OAuth)
+
+O token da API sai de um **app de parceiro**, não do painel da loja.
+
+1. Cadastre-se em <https://www.nuvemshop.com.br/parceiros>.
+2. No painel de parceiro, **Apps → criar app**. Anote o **App ID** (`client_id`) e o **Client Secret**.
+   Nos scopes, marque o que o projeto vai usar (produtos, pedidos, clientes, webhooks…).
+3. Logado como **dono da loja**, abra no navegador:
+   `https://www.tiendanube.com/apps/<APP_ID>/authorize`
+4. Após autorizar, a URL de redirect traz `?code=XXXX`. **Esse code expira em 5 minutos.**
+5. Troque o code pelo token:
+
+```bash
+python3 scripts/get-token.py --app-id <APP_ID> --secret <SECRET> --code <CODE>
+```
+
+O script grava `TIENDANUBE_ACCESS_TOKEN` e `TIENDANUBE_STORE_ID` no `.env` (crie antes com `cp .env.example .env`).
+**O access_token não expira** — só é invalidado se você gerar outro ou o lojista desinstalar o app.
+
+### 3. Autorizar a CLI (tema)
+
+```bash
+nuvemshop theme authorize
+```
+
+Autenticação da CLI é separada da API — uma coisa não substitui a outra.
+
+### 4. Trazer o tema para o repo
+
+```bash
+cd theme
+nuvemshop theme list                    # anote o THEME_ID da instalação
+nuvemshop theme pull --theme-id <ID>    # ou --published para o tema ativo
+cd ..
+git add theme && git commit -m "chore: tema inicial"
+```
+
+Loja nova sem tema próprio? Crie a partir de um tema base:
+
+```bash
+nuvemshop theme create --base-theme ipanema --title "Loja do Cliente"
+```
+
+Para editar além de `templates/` e `config/settings_data.json`, a instalação precisa estar **forkada**:
+
+```bash
+nuvemshop theme fork
+```
+
+### 5. Ambientes homolog e prod
+
+Cada ambiente é uma **instalação de tema diferente** na mesma loja (ou uma loja de teste separada). Duplique o tema (`nuvemshop theme clone`), pegue os dois IDs em `theme list` e coloque no `.env`:
+
+```
+THEME_ID_HOMOLOG=...
+THEME_ID_PROD=...
+```
+
+Nunca desenvolva direto contra o tema publicado.
+
+### 6. Ligar o MCP no Claude
+
+```bash
+cd mcp-server && python3 main.py                  # stdio (teste)
+MCP_TRANSPORT=streamable-http python3 main.py     # http://localhost:8080/mcp
+```
+
+- **Claude Code:** abrir a pasta já carrega o `.mcp.json` (exporte as env vars do `.env` antes).
+- **Claude Desktop:** copie `claude-desktop.example.json` para a config do app e preencha o token/store_id.
+
+Teste rápido pelo chat: *"lista as categorias da loja"* e *"roda theme_diff"*.
+
+### 7. Desenvolver
+
+```bash
+git checkout -b feat/home-banner
+cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG   # live reload
+```
+
+Daí em diante vale o [fluxo de tema](#fluxo-de-tema-git--loja).
+
+---
 
 ## O que a plataforma permite (e o que este repo cobre)
 
@@ -31,33 +134,10 @@ nuvemshop-dev/
 | Pagamento próprio | Payment Provider API — app homologado | ❌ (projeto à parte) |
 | Checkout | Hospedado; só scripts/estilo via app | ❌ |
 
-## Setup
-
-```bash
-# 1. dependências
-cd mcp-server && pip install -r requirements.txt && cd ..
-npm install -g @tiendanube/cli
-
-# 2. credenciais
-cp .env.example .env   # preencha TIENDANUBE_ACCESS_TOKEN e TIENDANUBE_STORE_ID
-nuvemshop theme authorize
-
-# 3. tema
-cd theme && nuvemshop theme list && nuvemshop theme pull --theme-id <ID> && cd ..
-
-# 4. testar o MCP
-cd mcp-server && python3 main.py          # stdio
-MCP_TRANSPORT=streamable-http python3 main.py   # http://localhost:8080/mcp
-```
-
-**Token da API**: crie um app em `partners.nuvemshop.com.br`, instale na loja e faça o fluxo OAuth — o `access_token` não expira.
-**Claude Code**: abrir a pasta já carrega `.mcp.json` (exporta as env vars antes).
-**Claude Desktop**: copie `claude-desktop.example.json` para a config do app e preencha.
-
 ## Fluxo de tema (git → loja)
 
 1. `git checkout -b feat/home-banner` → edita `theme/`
-2. `theme_diff` (ou `nuvemshop theme diff`) → PR
+2. `theme_diff` (ou `nuvemshop theme diff`) → abre o PR
 3. CI faz push em **homolog** e imprime a URL de preview
 4. Merge em `main` → CI faz push em **prod**
 5. `workflow_dispatch` com `publish=true` (ou `scripts/theme-push.sh prod --publish`) para ativar
@@ -68,14 +148,26 @@ Secrets do GitHub: `NUVEMSHOP_CLI_TOKEN`, `THEME_ID_HOMOLOG`, `THEME_ID_PROD` (c
 
 Um `.env`/instância por loja. Para vários clientes, rode uma instância do MCP por loja (ou troque as env vars) e um repo/branch de tema por loja.
 
+## Pendências
+
+Validar no primeiro projeto real:
+
+- [ ] `--token` da CLI junto com `--theme-id` em CI, sem `.nuvem` local. Se o workflow reclamar, rode um `pull` antes do `push` no job.
+- [ ] Import do SDK `mcp` no servidor (só a sintaxe foi validada até agora — nada rodou contra a API).
+- [ ] Qual header a API aceita: o server manda `Authentication: bearer` **e** `Authorization: Bearer`; confirmar e remover o que sobrar.
+- [ ] Comportamento sob rate limit em carga de catálogo grande (ver abaixo).
+
 ## Ressalvas
 
-- API tem rate limit; operações em lote grandes podem retornar 429 — o server não faz retry.
+- **Rate limit:** 40 requisições de bucket, 2 req/s por par loja-app (×10 nos planos Next/Evolution). Estourou, vem `429` — o server **não** faz retry. Cargas grandes precisam de throttle manual.
+- **User-Agent é obrigatório**; sem ele a API responde `400`.
 - Tools de exclusão (produto, cliente, webhook) não pedem confirmação. Teste numa loja de teste.
 - `manifest.json` e `.nuvem` são por máquina/ambiente e ficam fora do git.
+- Webhooks exigem URL **HTTPS pública** — em dev, use um túnel (ngrok/cloudflared).
 
 ## Docs
 
 - `mcp-server/docs/` — guias do upstream (quick start, deploy, variantes, SSE x streamable)
-- CLI: https://dev.nuvemshop.com.br/docs/developer-tools/cli/overview
-- API: https://tiendanube.github.io/api-documentation/resources
+- CLI: <https://dev.nuvemshop.com.br/docs/developer-tools/cli/overview>
+- API: <https://tiendanube.github.io/api-documentation/resources>
+- Autenticação: <https://tiendanube.github.io/api-documentation/authentication>
