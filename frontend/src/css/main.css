@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* Onde o Tailwind procura classes usadas. Os .tpl não são detectados
+   automaticamente (extensão fora do padrão), por isso o @source explícito. */
+@source "../../../theme/**/*.tpl";
+@source "../js/**/*.js";
+
+/* --------------------------------------------------------------------------
+   Ponte com o Brand Editor.
+
+   As variáveis --brand-* são definidas em theme/static/css/tokens.scss.tpl,
+   compilado pela Nuvemshop com os valores que o lojista escolhe no editor.
+   Aqui elas viram cores utilitárias do Tailwind (bg-brand, text-brand-accent…).
+
+   Os fallbacks existem só para o caso de o tokens.scss.tpl não carregar.
+   -------------------------------------------------------------------------- */
+@theme {
+  --color-brand: var(--brand-primary, #1a1a1a);
+  --color-brand-accent: var(--brand-secondary, #6366f1);
+  --color-brand-bg: var(--brand-background, #ffffff);
+  --color-brand-text: var(--brand-text, #1a1a1a);
+
+  --font-sans: var(--brand-font-body, ui-sans-serif, system-ui, sans-serif);
+  --font-display: var(--brand-font-heading, var(--font-sans));
+}
+
+/* --------------------------------------------------------------------------
+   Estilos base do tema.
+   Regra da plataforma: NÃO usar seletores de ID em CSS — IDs são reservados
+   para funções internas da Nuvemshop. Use classes ou os hooks js-*.
+   -------------------------------------------------------------------------- */
+@layer base {
+  body {
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-text);
+  }
+
+  /* Evita "flash" de conteúdo antes do Alpine inicializar */
+  [x-cloak] {
+    display: none !important;
+  }
+}

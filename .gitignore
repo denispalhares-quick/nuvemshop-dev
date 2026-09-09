@@ -10,3 +10,9 @@ node_modules/
 # metadados locais da CLI (contêm installation_id/revision_token — nunca versionar)
 theme/.nuvem
 theme/manifest.json
+
+# build do frontend (gerado pelo CI — nunca commitar)
+frontend/node_modules/
+theme/static/css/style.css
+theme/static/js/store.js
+theme/static/js/store.js.map

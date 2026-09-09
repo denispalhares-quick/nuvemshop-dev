@@ -11,6 +11,9 @@ case "$ENV_NAME" in
   *) echo "ambiente inválido: $ENV_NAME"; exit 1;;
 esac
 TOKEN_FLAG=(); [ -n "${NUVEMSHOP_CLI_TOKEN:-}" ] && TOKEN_FLAG=(--token "$NUVEMSHOP_CLI_TOKEN")
+
+echo ">> build do frontend"
+( cd frontend && npm run build )
 cd theme
 echo ">> diff ($ENV_NAME / theme $THEME_ID)"
 nuvemshop theme diff --theme-id "$THEME_ID" "${TOKEN_FLAG[@]}"

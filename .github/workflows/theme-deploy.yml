@@ -1,11 +1,11 @@
-name: Theme — deploy Nuvemshop
+name: Theme — build + deploy Nuvemshop
 
 on:
   pull_request:
-    paths: ["theme/**"]
+    paths: ["theme/**", "frontend/**", ".github/workflows/theme-deploy.yml"]
   push:
     branches: [main]
-    paths: ["theme/**"]
+    paths: ["theme/**", "frontend/**", ".github/workflows/theme-deploy.yml"]
   workflow_dispatch:
     inputs:
       publish:
@@ -24,7 +24,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Build do frontend
+        working-directory: frontend
+        run: npm ci && npm run build
       - run: npm i -g @tiendanube/cli
       - name: Diff contra HOMOLOG
         working-directory: theme
@@ -38,7 +44,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Build do frontend
+        working-directory: frontend
+        run: npm ci && npm run build
       - run: npm i -g @tiendanube/cli
       - name: Push para HOMOLOG
         working-directory: theme
@@ -54,7 +66,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Build do frontend
+        working-directory: frontend
+        run: npm ci && npm run build
       - run: npm i -g @tiendanube/cli
       - name: Push para PROD
         working-directory: theme

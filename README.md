@@ -1,6 +1,6 @@
 # nuvemshop-dev
 
-Kit de desenvolvimento Nuvemshop: um **servidor MCP** (catálogo, pedidos, clientes, cupons, **webhooks** e **tema**) + **tema versionado em git** com **deploy por CI**.
+Kit de desenvolvimento Nuvemshop: um **servidor MCP** (catálogo, pedidos, clientes, cupons, **webhooks** e **tema**) + **tema versionado em git**, com **build de frontend** (Tailwind + Alpine) e **deploy por CI**.
 
 > **Status:** repo pronto para uso, ainda não rodado contra uma loja real. O primeiro projeto que usar isto deve validar os pontos listados em [Pendências](#pendências).
 
@@ -15,14 +15,20 @@ Construído sobre o [nuvemshop-mcp-server](https://github.com/AlexandreProenca/n
 ```
 nuvemshop-dev/
 ├── mcp-server/            servidor MCP (Python) — main.py + extensions/{webhooks,theme}.py
+├── frontend/              fonte do CSS/JS — Tailwind v4 + esbuild + Alpine
+│   ├── build.mjs          bundle com nome fixo (sem hash)
+│   └── src/{css,js}/
 ├── theme/                 tema da loja (pull via CLI) — versionado aqui
+│   └── static/            css/tokens.scss.tpl é fonte; style.css e store.js são gerados
 ├── scripts/
 │   ├── get-token.py       troca o code do OAuth pelo access_token e grava no .env
-│   └── theme-push.sh      deploy manual: homolog | prod [--publish]
-├── .github/workflows/     theme-deploy.yml
+│   └── theme-push.sh      build + deploy manual: homolog | prod [--publish]
+├── docs/frontend.md       stack do front, assets, sections, restrições
+├── .github/workflows/     theme-deploy.yml (build → diff → push)
 ├── .mcp.json              config para Claude Code (raiz do projeto)
 └── claude-desktop.example.json
 ```
+
 
 ---
 
@@ -34,11 +40,12 @@ Passo a passo completo. Marque conforme for fazendo — o que trava a maioria da
 
 ```bash
 cd mcp-server && pip install -r requirements.txt && cd ..
+cd frontend && npm ci && cd ..
 npm install -g @tiendanube/cli
 nuvemshop --version          # confirma a instalação (o comando `tiendanube` é equivalente)
 ```
 
-Requisitos: Python 3.11+, Node 18+.
+Requisitos: Python 3.11+, Node 20+.
 
 ### 2. Credenciais da Admin API (OAuth)
 
@@ -83,7 +90,9 @@ Loja nova sem tema próprio? Crie a partir de um tema base:
 nuvemshop theme create --base-theme ipanema --title "Loja do Cliente"
 ```
 
-Para editar além de `templates/` e `config/settings_data.json`, a instalação precisa estar **forkada**:
+Prefira o **Ipanema** como base: é o único tema *sectionable* hoje, o que te dá sections e blocks editáveis pelo lojista no Brand Editor.
+
+Para editar além de `templates/`, `custom/` e `config/settings_data.json` — ou seja, para tocar em `static/`, `sections/`, `blocks/` e `layouts/` — a instalação precisa estar **forkada** (operação irreversível):
 
 ```bash
 nuvemshop theme fork
@@ -98,7 +107,7 @@ THEME_ID_HOMOLOG=...
 THEME_ID_PROD=...
 ```
 
-Nunca desenvolva direto contra o tema publicado.
+**Limite da plataforma: 2 instalações de tema por loja.** Homolog e prod cabem exatos, sem folga para uma terceira. Nunca desenvolva direto contra o tema publicado.
 
 ### 6. Ligar o MCP no Claude
 
@@ -116,12 +125,35 @@ Teste rápido pelo chat: *"lista as categorias da loja"* e *"roda theme_diff"*.
 
 ```bash
 git checkout -b feat/home-banner
-cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG   # live reload
+
+# terminal 1 — recompila CSS/JS a cada save
+cd frontend && npm run dev
+
+# terminal 2 — envia para a instalação de homologação
+cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG
 ```
 
-Daí em diante vale o [fluxo de tema](#fluxo-de-tema-git--loja).
+Daí em diante vale o [fluxo de tema](#fluxo-de-tema-git--loja). Detalhes do front em **[docs/frontend.md](docs/frontend.md)**.
 
 ---
+
+## Frontend
+
+O tema **não** é só HTML/CSS/JS: a Nuvemshop roda **Twig** e compila **SASS** no servidor. O build local cobre só a parte estática.
+
+| Camada | Onde roda | No repo |
+|---|---|---|
+| Twig (`.tpl`) | servidor da Nuvemshop | `theme/` |
+| SASS (`.scss.tpl`) | servidor da Nuvemshop | `theme/static/css/tokens.scss.tpl` |
+| CSS/JS estáticos | navegador | build de `frontend/src/` → `theme/static/` |
+
+- **Tailwind v4** → `theme/static/css/style.css`
+- **esbuild + Alpine.js** → `theme/static/js/store.js` (nome fixo: o `.tpl` referencia o arquivo literalmente, e não há manifest de assets na plataforma)
+- **`tokens.scss.tpl`** faz a ponte entre as cores do Brand Editor e o Tailwind, via CSS custom properties
+
+Saída de build é gitignorada — quem gera é o CI. Nada de SPA: o HTML já vem renderizado, o JS é progressive enhancement.
+
+Guia completo: **[docs/frontend.md](docs/frontend.md)**.
 
 ## O que a plataforma permite (e o que este repo cobre)
 
@@ -136,9 +168,9 @@ Daí em diante vale o [fluxo de tema](#fluxo-de-tema-git--loja).
 
 ## Fluxo de tema (git → loja)
 
-1. `git checkout -b feat/home-banner` → edita `theme/`
+1. `git checkout -b feat/home-banner` → edita `theme/` e/ou `frontend/src/`
 2. `theme_diff` (ou `nuvemshop theme diff`) → abre o PR
-3. CI faz push em **homolog** e imprime a URL de preview
+3. CI faz o build do frontend, push em **homolog** e imprime a URL de preview
 4. Merge em `main` → CI faz push em **prod**
 5. `workflow_dispatch` com `publish=true` (ou `scripts/theme-push.sh prod --publish`) para ativar
 
@@ -156,6 +188,8 @@ Validar no primeiro projeto real:
 - [ ] Import do SDK `mcp` no servidor (só a sintaxe foi validada até agora — nada rodou contra a API).
 - [ ] Qual header a API aceita: o server manda `Authentication: bearer` **e** `Authorization: Bearer`; confirmar e remover o que sobrar.
 - [ ] Comportamento sob rate limit em carga de catálogo grande (ver abaixo).
+- [ ] **Cache-busting dos assets**: com nome fixo e sem hash, não está documentado se o `static_url` versiona a URL a cada revisão do tema. Testar no primeiro deploy; se não versionar, usar sufixo manual via setting.
+- [ ] Nomes dos settings em `theme/static/css/tokens.scss.tpl` — conferir contra o tema real depois do `theme pull`.
 
 ## Ressalvas
 
