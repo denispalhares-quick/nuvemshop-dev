@@ -27,7 +27,7 @@ seção "Sem fork" de `docs/frontend.md`.
 Rode e reporte só o que falhar:
 
 ```bash
-(set -a && . ./.env && for v in TIENDANUBE_ACCESS_TOKEN TIENDANUBE_STORE_ID THEME_ID_HOMOLOG; do [ -n "${!v}" ] && echo "ok $v" || echo "FALTA $v"; done)
+(set -a && . ./.env && for v in TIENDANUBE_ACCESS_TOKEN TIENDANUBE_STORE_ID THEME_ID_HOMOLOG; do [ -n "$(printenv "$v")" ] && echo "ok $v" || echo "FALTA $v"; done)
 test -f theme/.nuvem && echo "ok theme/.nuvem" || echo "FALTA theme/.nuvem (nuvemshop theme authorize dentro de theme/)"
 gh auth status >/dev/null 2>&1 && echo "ok gh" || echo "FALTA gh auth login"
 docker compose ps --format 'table {{.Service}}\t{{.Status}}'

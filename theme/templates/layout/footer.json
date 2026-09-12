@@ -5,8 +5,8 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "background_color": "#FFFFFF",
-        "text_color": "#000000",
+        "background_color": "#000033",
+        "text_color": "#FFFFFF",
         "vertical_padding": 108,
         "menus_toggle": true,
         "footer_payments_show": true,
@@ -18,28 +18,28 @@
         "menu_1": {
           "type": "footer-menu",
           "settings": {
-            "title": "Seu título aqui",
+            "title": "Categorias em alta",
             "menu": "navigation"
           }
         },
         "menu_2": {
           "type": "footer-menu",
           "settings": {
-            "title": "Seu título aqui",
+            "title": "Atendimento",
             "menu": "navigation"
           }
         },
         "menu_3": {
           "type": "footer-menu",
           "settings": {
-            "title": "Seu título aqui",
+            "title": "Institucional",
             "menu": "navigation"
           }
         },
         "institutional": {
           "type": "footer-institutional",
           "settings": {
-            "description": "Nossa marca tem uma tradição que é transmitida há 3 gerações. Isso nos permite garantir e oferecer a mais alta qualidade em nossos produtos.",
+            "description": "Agilidade e performance do clique à entrega. Ofertas selecionadas todos os dias, com atendimento de quem entende de e-commerce.",
             "logo_height": 40,
             "show_contact": false
           }

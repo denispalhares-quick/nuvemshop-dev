@@ -3,76 +3,105 @@
     "slideshow": {
       "type": "slideshow",
       "settings": {
-        "autoplay": false
+        "autoplay": true,
+        "section_width": "page",
+        "autoplay_speed": 6,
+        "vertical_padding": 24
       },
       "blocks": {
         "slide_1": {
           "type": "slide",
           "settings": {
-            "alignment": "center",
+            "alignment": "start",
             "gap": 16,
             "vertical_padding": 32,
-            "horizontal_padding": 32,
-            "text_color": "#FFFF00"
+            "horizontal_padding": 64,
+            "text_color": "#FFFFFF",
+            "show_overlay": true,
+            "overlay_color": "#000066",
+            "overlay_opacity": 85,
+            "link": "/produtos/"
           },
           "blocks": {
             "heading": {
               "type": "heading",
               "settings": {
-                "title": "Título",
+                "title": "Tecnologia no pulso.",
                 "size": "custom",
-                "custom_font_size": 118,
-                "custom_mobile_font_size": 90,
+                "custom_font_size": 64,
+                "custom_mobile_font_size": 40,
                 "mobile_font_size": true
               }
             },
             "button": {
               "type": "button",
               "settings": {
-                "label": "Ver mais",
+                "label": "Aproveitar agora",
                 "variant": "primary",
-                "size": "big"
+                "size": "medium",
+                "link": "/produtos/"
+              }
+            },
+            "kicker": {
+              "type": "text",
+              "settings": {
+                "text": "Ofertas da semana em smartwatches",
+                "size": "paragraph_big"
+              }
+            },
+            "offer": {
+              "type": "text",
+              "settings": {
+                "text": "Até 80% OFF",
+                "size": "paragraph_big"
               }
             }
           },
           "block_order": [
+            "kicker",
             "heading",
+            "offer",
             "button"
           ]
         },
         "slide_2": {
           "type": "slide",
           "settings": {
-            "alignment": "center",
+            "alignment": "start",
             "gap": 16,
             "vertical_padding": 32,
-            "horizontal_padding": 32,
-            "text_color": "#FFFF00"
+            "horizontal_padding": 64,
+            "text_color": "#FFFFFF",
+            "show_overlay": true,
+            "overlay_color": "#000033",
+            "overlay_opacity": 85,
+            "link": "/produtos/"
           },
           "blocks": {
             "heading": {
               "type": "heading",
               "settings": {
-                "title": "Título",
+                "title": "Performance que acelera.",
                 "size": "custom",
-                "custom_font_size": 118,
-                "custom_mobile_font_size": 90,
+                "custom_font_size": 64,
+                "custom_mobile_font_size": 40,
                 "mobile_font_size": true
               }
             },
             "text": {
               "type": "text",
               "settings": {
-                "text": "Descrição do slide",
+                "text": "Acessórios com até 50% OFF",
                 "size": "paragraph_big"
               }
             },
             "button": {
               "type": "button",
               "settings": {
-                "label": "Ver mais",
+                "label": "Ver acessórios",
                 "variant": "primary",
-                "size": "big"
+                "size": "medium",
+                "link": "/produtos/"
               }
             }
           },
@@ -88,34 +117,13 @@
         "slide_2"
       ]
     },
-    "cmp_beneficios": {
-      "type": "custom",
-      "settings": {
-        "section_width": "full",
-        "vertical_padding": 0,
-        "horizontal_padding": 0,
-        "gap": 0
-      },
-      "blocks": {
-        "code": {
-          "type": "code",
-          "settings": {
-            "code": "<div class=\"tw:mx-auto tw:max-w-6xl tw:px-4 tw:py-8\">\n  <ul class=\"tw:grid tw:grid-cols-1 tw:gap-6 tw:md:grid-cols-3\">\n    <li class=\"tw:flex tw:items-start tw:gap-3\">\n      <span class=\"tw:text-2xl tw:text-brand-accent\" aria-hidden=\"true\">🚚</span>\n      <div>\n        <p class=\"tw:font-display tw:font-bold\">Frete grátis</p>\n        <p class=\"tw:text-sm tw:opacity-80\">Em compras acima de R$ 299</p>\n      </div>\n    </li>\n    <li class=\"tw:flex tw:items-start tw:gap-3\">\n      <span class=\"tw:text-2xl tw:text-brand-accent\" aria-hidden=\"true\">💳</span>\n      <div>\n        <p class=\"tw:font-display tw:font-bold\">Até 6x sem juros</p>\n        <p class=\"tw:text-sm tw:opacity-80\">Em todos os cartões</p>\n      </div>\n    </li>\n    <li class=\"tw:flex tw:items-start tw:gap-3\">\n      <span class=\"tw:text-2xl tw:text-brand-accent\" aria-hidden=\"true\">↩️</span>\n      <div>\n        <p class=\"tw:font-display tw:font-bold\">Troca fácil</p>\n        <p class=\"tw:text-sm tw:opacity-80\">30 dias para trocar</p>\n      </div>\n    </li>\n  </ul>\n</div>",
-            "width": "fill"
-          }
-        }
-      },
-      "block_order": [
-        "code"
-      ]
-    },
     "featured_products_1": {
       "type": "product-list",
       "settings": {
-        "alignment": "center",
+        "alignment": "left",
         "section_width": "page",
-        "gap": 20,
-        "vertical_padding": 64
+        "gap": 24,
+        "vertical_padding": 48
       },
       "blocks": {
         "header_group": {
@@ -129,15 +137,15 @@
             "heading": {
               "type": "heading",
               "settings": {
-                "title": "Seu título aqui",
-                "size": "h5"
+                "title": "As melhores ofertas em smartphones",
+                "size": "h4"
               }
             },
             "view_all_button": {
               "type": "view-all-button",
               "settings": {
-                "label": "Ver mais",
-                "variant": "secondary"
+                "label": "Ver tudo",
+                "variant": "tertiary"
               }
             }
           },
@@ -150,9 +158,12 @@
           "type": "products",
           "settings": {
             "products_source": null,
-            "format": "slider",
-            "columns": "4",
-            "columns_mobile": "1"
+            "format": "grid",
+            "columns": "5",
+            "columns_mobile": "2",
+            "use_different_mobile_format": true,
+            "format_mobile": "slider",
+            "max_products": 10
           }
         }
       },
@@ -161,36 +172,100 @@
         "products"
       ]
     },
+    "cmp_categorias_circulos": {
+      "type": "custom",
+      "settings": {
+        "section_width": "full",
+        "vertical_padding": 0,
+        "horizontal_padding": 0,
+        "gap": 0
+      },
+      "blocks": {
+        "code": {
+          "type": "code",
+          "settings": {
+            "code": "<section class=\"tw:mx-auto tw:w-full tw:max-w-[1200px] tw:px-4 tw:py-10 tw:md:py-14\" aria-label=\"Compre por categorias\">\n  <div class=\"tw:flex tw:items-end tw:justify-between tw:gap-4 tw:border-b tw:border-[#D1D5DB]\">\n    <h2 class=\"tw:m-0 tw:-mb-px tw:border-b-2 tw:border-brand tw:pb-3 tw:font-display tw:text-xl tw:font-black tw:text-[#000066] tw:md:text-2xl\">\n      Compre por <span class=\"tw:text-brand\">categorias</span>\n    </h2>\n    <a href=\"/produtos/\" class=\"tw:pb-3 tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:no-underline tw:hover:text-brand\">\n      Ver tudo <span aria-hidden=\"true\">›</span>\n    </a>\n  </div>\n\n  <ul class=\"tw:m-0 tw:mt-8 tw:flex tw:list-none tw:snap-x tw:gap-5 tw:overflow-x-auto tw:p-0 tw:pb-2 tw:md:grid tw:md:grid-cols-7 tw:md:gap-6 tw:md:overflow-visible\">\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-1.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Celulares</span>\n      </a>\n    </li>\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-2.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Beleza</span>\n      </a>\n    </li>\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-3.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Eletrônicos</span>\n      </a>\n    </li>\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-4.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Casa</span>\n      </a>\n    </li>\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-5.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Relógios</span>\n      </a>\n    </li>\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-6.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Decoração</span>\n      </a>\n    </li>\n    <li class=\"tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto\">\n      <a href=\"/produtos/\" class=\"tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline\">\n        <span class=\"tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand\">\n          <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/categoria-7.webp\" alt=\"\" width=\"132\" height=\"132\" loading=\"lazy\" class=\"tw:size-full tw:object-cover\">\n        </span>\n        <span class=\"tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand\">Acessórios</span>\n      </a>\n    </li>\n  </ul>\n</section>",
+            "width": "fill"
+          }
+        }
+      },
+      "block_order": [
+        "code"
+      ]
+    },
+    "cmp_destaques_marcas": {
+      "type": "custom",
+      "settings": {
+        "section_width": "full",
+        "vertical_padding": 0,
+        "horizontal_padding": 0,
+        "gap": 0
+      },
+      "blocks": {
+        "code": {
+          "type": "code",
+          "settings": {
+            "code": "<section class=\"tw:mx-auto tw:w-full tw:max-w-[1200px] tw:px-4 tw:py-10 tw:md:py-14\" aria-label=\"Destaques da semana\">\n  <div class=\"tw:flex tw:items-end tw:justify-between tw:gap-4 tw:border-b tw:border-[#D1D5DB]\">\n    <h2 class=\"tw:m-0 tw:-mb-px tw:border-b-2 tw:border-brand tw:pb-3 tw:font-display tw:text-xl tw:font-black tw:text-[#000066] tw:md:text-2xl\">\n      Destaques da <span class=\"tw:text-brand\">semana</span>\n    </h2>\n    <a href=\"/produtos/\" class=\"tw:pb-3 tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:no-underline tw:hover:text-brand\">\n      Ver tudo <span aria-hidden=\"true\">›</span>\n    </a>\n  </div>\n\n  <div class=\"tw:mt-8 tw:flex tw:snap-x tw:gap-4 tw:overflow-x-auto tw:pb-2 tw:md:grid tw:md:grid-cols-3 tw:md:overflow-visible\">\n    <a href=\"/produtos/\" class=\"tw:group tw:relative tw:flex tw:h-52 tw:w-[85%] tw:shrink-0 tw:snap-start tw:overflow-hidden tw:rounded-2xl tw:bg-[#000066] tw:p-6 tw:text-white tw:no-underline tw:md:w-auto\">\n      <span class=\"tw:absolute tw:-right-12 tw:-top-16 tw:size-64 tw:rounded-full tw:bg-white/5\" aria-hidden=\"true\"></span>\n      <span class=\"tw:relative tw:z-10 tw:flex tw:max-w-[60%] tw:flex-col tw:items-start\">\n        <span class=\"tw:rounded-md tw:bg-white/10 tw:px-3 tw:py-1.5 tw:text-xs tw:font-bold tw:uppercase tw:tracking-[0.2em]\">Lançamentos</span>\n        <span class=\"tw:mt-4 tw:font-display tw:text-2xl tw:font-black tw:leading-tight\">Chegou agora</span>\n        <span class=\"tw:mt-auto tw:text-lg tw:font-bold\">Até 30% <span class=\"tw:text-brand\">OFF</span></span>\n      </span>\n      <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/destaque-1.webp\" alt=\"\" width=\"200\" height=\"200\" loading=\"lazy\" class=\"tw:absolute tw:bottom-0 tw:right-0 tw:h-full tw:w-2/5 tw:object-cover tw:transition tw:group-hover:scale-105\">\n    </a>\n\n    <a href=\"/produtos/\" class=\"tw:group tw:relative tw:flex tw:h-52 tw:w-[85%] tw:shrink-0 tw:snap-start tw:overflow-hidden tw:rounded-2xl tw:bg-[#FFF1EC] tw:p-6 tw:text-[#000066] tw:no-underline tw:md:w-auto\">\n      <span class=\"tw:absolute tw:-right-12 tw:-top-16 tw:size-64 tw:rounded-full tw:bg-brand/10\" aria-hidden=\"true\"></span>\n      <span class=\"tw:relative tw:z-10 tw:flex tw:max-w-[60%] tw:flex-col tw:items-start\">\n        <span class=\"tw:rounded-md tw:bg-brand tw:px-3 tw:py-1.5 tw:text-xs tw:font-bold tw:uppercase tw:tracking-[0.2em] tw:text-white\">Mais vendidos</span>\n        <span class=\"tw:mt-4 tw:font-display tw:text-2xl tw:font-black tw:leading-tight\">Performance comprovada</span>\n        <span class=\"tw:mt-auto tw:text-lg tw:font-bold\">Até 50% <span class=\"tw:text-brand\">OFF</span></span>\n      </span>\n      <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/destaque-2.webp\" alt=\"\" width=\"200\" height=\"200\" loading=\"lazy\" class=\"tw:absolute tw:bottom-0 tw:right-0 tw:h-full tw:w-2/5 tw:object-cover tw:transition tw:group-hover:scale-105\">\n    </a>\n\n    <a href=\"/produtos/\" class=\"tw:group tw:relative tw:flex tw:h-52 tw:w-[85%] tw:shrink-0 tw:snap-start tw:overflow-hidden tw:rounded-2xl tw:bg-[#F8F9FC] tw:p-6 tw:text-[#000066] tw:no-underline tw:ring-1 tw:ring-[#E5E7EB] tw:md:w-auto\">\n      <span class=\"tw:absolute tw:-right-12 tw:-top-16 tw:size-64 tw:rounded-full tw:bg-[#000066]/5\" aria-hidden=\"true\"></span>\n      <span class=\"tw:relative tw:z-10 tw:flex tw:max-w-[60%] tw:flex-col tw:items-start\">\n        <span class=\"tw:rounded-md tw:bg-[#000066] tw:px-3 tw:py-1.5 tw:text-xs tw:font-bold tw:uppercase tw:tracking-[0.2em] tw:text-white\">Outlet</span>\n        <span class=\"tw:mt-4 tw:font-display tw:text-2xl tw:font-black tw:leading-tight\">Última chance</span>\n        <span class=\"tw:mt-auto tw:text-lg tw:font-bold\">Até 80% <span class=\"tw:text-brand\">OFF</span></span>\n      </span>\n      <img src=\"https://cdn.jsdelivr.net/gh/denispalhares-quick/nuvemshop-dev@6497b911e80b24704b0682bc0f615216fe1ebe97/design/assets/home/destaque-3.webp\" alt=\"\" width=\"200\" height=\"200\" loading=\"lazy\" class=\"tw:absolute tw:bottom-0 tw:right-0 tw:h-full tw:w-2/5 tw:object-cover tw:transition tw:group-hover:scale-105\">\n    </a>\n  </div>\n</section>",
+            "width": "fill"
+          }
+        }
+      },
+      "block_order": [
+        "code"
+      ]
+    },
+    "cmp_essenciais_titulo": {
+      "type": "custom",
+      "settings": {
+        "section_width": "full",
+        "vertical_padding": 0,
+        "horizontal_padding": 0,
+        "gap": 0
+      },
+      "blocks": {
+        "code": {
+          "type": "code",
+          "settings": {
+            "code": "<div class=\"tw:mx-auto tw:w-full tw:max-w-[1200px] tw:px-4 tw:pt-10 tw:md:pt-14\">\n  <div class=\"tw:flex tw:items-end tw:justify-between tw:gap-4 tw:border-b tw:border-[#D1D5DB]\">\n    <h2 class=\"tw:m-0 tw:-mb-px tw:border-b-2 tw:border-brand tw:pb-3 tw:font-display tw:text-xl tw:font-black tw:text-[#000066] tw:md:text-2xl\">\n      Essenciais do <span class=\"tw:text-brand\">dia</span>\n    </h2>\n    <a href=\"/produtos/\" class=\"tw:pb-3 tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:no-underline tw:hover:text-brand\">\n      Ver tudo <span aria-hidden=\"true\">›</span>\n    </a>\n  </div>\n</div>",
+            "width": "fill"
+          }
+        }
+      },
+      "block_order": [
+        "code"
+      ]
+    },
     "banners_grid_3_vertical": {
       "type": "banners",
       "settings": {
         "format": "grid",
-        "columns": "2",
-        "columns_mobile": "1",
+        "columns": "3",
+        "columns_mobile": "2",
         "section_width": "page",
-        "banner_aspect_ratio": "original",
+        "banner_aspect_ratio": "square",
         "gap": 16,
-        "vertical_padding": 0,
+        "vertical_padding": 24,
         "horizontal_padding": 0
       },
       "blocks": {
         "banner_1": {
           "type": "banner",
           "settings": {
-            "text_outside": false,
+            "text_outside": true,
             "alignment": "center",
             "alignment_vertical": "center",
-            "gap": 8,
-            "vertical_padding": 24,
-            "horizontal_padding": 24,
-            "text_color": "#FFFF00"
+            "gap": 4,
+            "vertical_padding": 12,
+            "horizontal_padding": 0,
+            "text_color": "#1F2937",
+            "link": "/produtos/"
           },
           "blocks": {
             "heading": {
               "type": "heading",
               "settings": {
-                "title": "Título",
-                "size": "h1"
+                "title": "Até 50% OFF",
+                "size": "h6"
               }
             },
             "button": {
@@ -200,30 +275,38 @@
                 "variant": "primary",
                 "size": "medium"
               }
+            },
+            "label": {
+              "type": "text",
+              "settings": {
+                "text": "Mercearia",
+                "size": "paragraph_small"
+              }
             }
           },
           "block_order": [
-            "heading",
-            "button"
+            "label",
+            "heading"
           ]
         },
         "banner": {
           "type": "banner",
           "settings": {
-            "text_outside": false,
+            "text_outside": true,
             "alignment": "center",
             "alignment_vertical": "center",
-            "gap": 8,
-            "vertical_padding": 24,
-            "horizontal_padding": 24,
-            "text_color": "#FFFF00"
+            "gap": 4,
+            "vertical_padding": 12,
+            "horizontal_padding": 0,
+            "text_color": "#1F2937",
+            "link": "/produtos/"
           },
           "blocks": {
             "heading": {
               "type": "heading",
               "settings": {
-                "title": "Título",
-                "size": "h1"
+                "title": "Até 40% OFF",
+                "size": "h6"
               }
             },
             "button": {
@@ -233,24 +316,165 @@
                 "variant": "primary",
                 "size": "medium"
               }
+            },
+            "label": {
+              "type": "text",
+              "settings": {
+                "text": "Hortifrúti",
+                "size": "paragraph_small"
+              }
             }
           },
           "block_order": [
-            "heading",
-            "button"
+            "label",
+            "heading"
+          ]
+        },
+        "banner_3": {
+          "type": "banner",
+          "settings": {
+            "text_outside": true,
+            "alignment": "center",
+            "text_color": "#1F2937",
+            "gap": 4,
+            "vertical_padding": 12,
+            "horizontal_padding": 0,
+            "link": "/produtos/"
+          },
+          "blocks": {
+            "label": {
+              "type": "text",
+              "settings": {
+                "text": "Frutas",
+                "size": "paragraph_small"
+              }
+            },
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Até 50% OFF",
+                "size": "h6"
+              }
+            }
+          },
+          "block_order": [
+            "label",
+            "heading"
+          ]
+        },
+        "banner_4": {
+          "type": "banner",
+          "settings": {
+            "text_outside": true,
+            "alignment": "center",
+            "text_color": "#1F2937",
+            "gap": 4,
+            "vertical_padding": 12,
+            "horizontal_padding": 0,
+            "link": "/produtos/"
+          },
+          "blocks": {
+            "label": {
+              "type": "text",
+              "settings": {
+                "text": "Bebidas",
+                "size": "paragraph_small"
+              }
+            },
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Até 30% OFF",
+                "size": "h6"
+              }
+            }
+          },
+          "block_order": [
+            "label",
+            "heading"
+          ]
+        },
+        "banner_5": {
+          "type": "banner",
+          "settings": {
+            "text_outside": true,
+            "alignment": "center",
+            "text_color": "#1F2937",
+            "gap": 4,
+            "vertical_padding": 12,
+            "horizontal_padding": 0,
+            "link": "/produtos/"
+          },
+          "blocks": {
+            "label": {
+              "type": "text",
+              "settings": {
+                "text": "Padaria",
+                "size": "paragraph_small"
+              }
+            },
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Até 25% OFF",
+                "size": "h6"
+              }
+            }
+          },
+          "block_order": [
+            "label",
+            "heading"
+          ]
+        },
+        "banner_6": {
+          "type": "banner",
+          "settings": {
+            "text_outside": true,
+            "alignment": "center",
+            "text_color": "#1F2937",
+            "gap": 4,
+            "vertical_padding": 12,
+            "horizontal_padding": 0,
+            "link": "/produtos/"
+          },
+          "blocks": {
+            "label": {
+              "type": "text",
+              "settings": {
+                "text": "Congelados",
+                "size": "paragraph_small"
+              }
+            },
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Até 50% OFF",
+                "size": "h6"
+              }
+            }
+          },
+          "block_order": [
+            "label",
+            "heading"
           ]
         }
       },
       "block_order": [
         "banner_1",
-        "banner"
+        "banner",
+        "banner_3",
+        "banner_4",
+        "banner_5",
+        "banner_6"
       ]
     }
   },
   "order": [
     "slideshow",
-    "cmp_beneficios",
     "featured_products_1",
+    "cmp_categorias_circulos",
+    "cmp_destaques_marcas",
+    "cmp_essenciais_titulo",
     "banners_grid_3_vertical"
   ]
 }
