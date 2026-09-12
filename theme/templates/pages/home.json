@@ -88,6 +88,27 @@
         "slide_2"
       ]
     },
+    "cmp_beneficios": {
+      "type": "custom",
+      "settings": {
+        "section_width": "full",
+        "vertical_padding": 0,
+        "horizontal_padding": 0,
+        "gap": 0
+      },
+      "blocks": {
+        "code": {
+          "type": "code",
+          "settings": {
+            "code": "<div class=\"tw:mx-auto tw:max-w-6xl tw:px-4 tw:py-8\">\n  <ul class=\"tw:grid tw:grid-cols-1 tw:gap-6 tw:md:grid-cols-3\">\n    <li class=\"tw:flex tw:items-start tw:gap-3\">\n      <span class=\"tw:text-2xl tw:text-brand-accent\" aria-hidden=\"true\">🚚</span>\n      <div>\n        <p class=\"tw:font-display tw:font-bold\">Frete grátis</p>\n        <p class=\"tw:text-sm tw:opacity-80\">Em compras acima de R$ 299</p>\n      </div>\n    </li>\n    <li class=\"tw:flex tw:items-start tw:gap-3\">\n      <span class=\"tw:text-2xl tw:text-brand-accent\" aria-hidden=\"true\">💳</span>\n      <div>\n        <p class=\"tw:font-display tw:font-bold\">Até 6x sem juros</p>\n        <p class=\"tw:text-sm tw:opacity-80\">Em todos os cartões</p>\n      </div>\n    </li>\n    <li class=\"tw:flex tw:items-start tw:gap-3\">\n      <span class=\"tw:text-2xl tw:text-brand-accent\" aria-hidden=\"true\">↩️</span>\n      <div>\n        <p class=\"tw:font-display tw:font-bold\">Troca fácil</p>\n        <p class=\"tw:text-sm tw:opacity-80\">30 dias para trocar</p>\n      </div>\n    </li>\n  </ul>\n</div>",
+            "width": "fill"
+          }
+        }
+      },
+      "block_order": [
+        "code"
+      ]
+    },
     "featured_products_1": {
       "type": "product-list",
       "settings": {
@@ -228,6 +249,7 @@
   },
   "order": [
     "slideshow",
+    "cmp_beneficios",
     "featured_products_1",
     "banners_grid_3_vertical"
   ]

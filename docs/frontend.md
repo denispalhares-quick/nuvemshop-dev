@@ -44,8 +44,14 @@ Detalhes do `inject.mjs`:
 - `config/settings_data.json` também guarda as configurações do Brand Editor. Mudanças feitas
   direto na loja precisam de um `theme pull` antes do próximo push, senão o push as desfaz.
 
-HTML próprio (com classes `tw:`) entra em blocks "Código" nos templates JSON — por isso o Tailwind
-também lê `theme/templates/**/*.json`.
+HTML próprio (com classes `tw:`) entra em blocks "Código" nos templates JSON. Não escreva isso à mão:
+crie o componente em `design/components/<nome>.html` e liste em `design/pages/<pagina>.yaml` — o
+`frontend/compose.mjs` gera a seção "Personalizada" (`cmp_<nome>`). O Tailwind lê `design/components/`
+e `theme/templates/**/*.json`. Formato completo em [design/README.md](../design/README.md).
+
+**Imagens externas funcionam em seções nativas**: testado — `image` de um slide com URL do jsDelivr foi
+aceito pelo `theme push` e persistido no homolog (`theme diff` = 0). O `snippets/image.tpl` do Ipanema
+aceita URL além de `@media-lib:`.
 
 Fonte em `frontend/src/`, saída em `theme/static/`. A saída é **gitignorada** — quem
 gera é o build (local ou CI).
@@ -95,7 +101,7 @@ Fluxo completo de desenvolvimento, com recarga na loja:
 cd frontend && npm run dev
 
 # terminal 2 — envia para a instalação de homologação
-cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG
+(set -a && . ./.env && cd theme && nuvemshop theme watch --theme-id "$THEME_ID_HOMOLOG")
 ```
 
 ## Referenciando os assets no `.tpl`

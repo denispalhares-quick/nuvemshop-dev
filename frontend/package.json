@@ -5,11 +5,12 @@
   "type": "module",
   "description": "Build de CSS (Tailwind) e JS (esbuild + Alpine) para o tema Nuvemshop",
   "scripts": {
-    "build": "npm run build:css && npm run build:js && npm run inject",
+    "build": "npm run build:css && npm run build:js && npm run compose && npm run inject",
     "build:css": "tailwindcss -i src/css/main.css -o ../theme/static/css/tailwind.css --minify",
     "build:js": "node build.mjs",
+    "compose": "node compose.mjs",
     "inject": "node inject.mjs",
-    "dev": "node build.mjs --watch & node inject.mjs --watch & tailwindcss -i src/css/main.css -o ../theme/static/css/tailwind.css --watch",
+    "dev": "node build.mjs --watch & node compose.mjs --watch & node inject.mjs --watch & tailwindcss -i src/css/main.css -o ../theme/static/css/tailwind.css --watch",
     "clean": "rm -f ../theme/static/css/tailwind.css ../theme/static/js/app.js"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "esbuild": "^0.28.2",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "yaml": "^2.9.1"
   }
 }

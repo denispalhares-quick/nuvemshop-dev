@@ -145,13 +145,63 @@ Você edita os arquivos normalmente no seu editor. A loja **não roda local** �
 Nuvemshop —, então o resultado aparece na URL de preview:
 
 ```bash
-cd theme && nuvemshop theme preview --theme-id $THEME_ID_HOMOLOG
+(set -a && . ./.env && cd theme && nuvemshop theme preview --theme-id "$THEME_ID_HOMOLOG")
 ```
 
 Pré-requisitos: `.env` preenchido e `nuvemshop theme authorize` feito no host (o `theme/.nuvem` entra no
 container pelo volume). Se a CLI fizer alguma pergunta: `docker compose attach theme`.
 
 Sem fork, só `templates/` e `config/settings_data.json` chegam na loja — veja [docs/frontend.md](docs/frontend.md#sem-fork-como-o-build-chega-na-loja).
+
+**Do Figma para a loja (`design/`):**
+
+O layout das páginas mora em [`design/`](design/README.md) e é montado pelo `frontend/compose.mjs`
+(no build, no Docker em watch e no CI):
+
+- `design/pages/home.yaml` — ordem das seções, misturando **seções nativas** do Ipanema (editáveis no
+  Brand Editor, com dados da loja) e **componentes custom**;
+- `design/components/*.html` — HTML + Tailwind (`tw:`) + Alpine, cada um vira uma seção "Personalizada";
+- `design/assets/` — imagens referenciadas como `asset:<caminho>`, servidas pelo jsDelivr no commit atual
+  (commite e dê push antes de olhar o preview).
+
+Duas skills do Claude Code conduzem o trabalho:
+
+| Skill | Quando |
+|---|---|
+| `figma-to-theme` | link do Figma → tokens, seções, componentes, imagens → homolog → PR/CI → publicar só com ok |
+| `brand-editor-sync` | ajustes feitos no Brand Editor → `pull` → rebuild → commit |
+
+**Editando pelo Brand Editor (montar home, trocar imagens, textos, cores):**
+
+O Brand Editor grava direto na loja, e o `theme watch` e o CI enviam os arquivos do repo. Se os dois
+mexerem ao mesmo tempo, um sobrescreve o outro. Siga esta ordem, sempre a partir da **raiz do projeto**:
+
+1. Pare o envio automático — com ele rodando, qualquer rebuild do CSS reenvia o `settings_data.json`
+   local por cima do que você mudou no editor:
+   ```bash
+   docker compose stop theme
+   ```
+2. No admin da loja, vá em **Loja online → Layout**. A instalação de homolog aparece como **rascunho**
+   (a Nuvemshop permite um rascunho por vez) — abra a personalização dela, **não** a do layout publicado.
+   Faça as mudanças, use **"Salvar rascunho"** (nunca "Publicar") e confira na URL de preview.
+3. Traga as mudanças para o repo — o `pull` roda **dentro de `theme/`**; rodado na raiz, ele baixa uma
+   cópia do tema inteiro na raiz:
+   ```bash
+   (set -a && . ./.env && cd theme && nuvemshop theme pull --theme-id "$THEME_ID_HOMOLOG")
+   ```
+   Os parênteses carregam o `.env` e entram em `theme/` só para esse comando — o terminal continua na raiz.
+4. Refaça o CSS/JS e religue o envio. O `pull` **apaga** `tailwind.css` e `app.js` (existem só localmente)
+   e tira o CSS/JS injetado dos JSON; sem este passo o `frontend` fica *unhealthy* e o `theme` não sobe:
+   ```bash
+   docker compose restart frontend && docker compose up -d theme
+   ```
+5. Commite e abra o PR:
+   ```bash
+   git add theme && git commit -m "feat(theme): <o que mudou>"
+   ```
+
+> **Não pule o passo 5.** Todo PR roda o job `homolog`, que envia o que está no git para o tema.
+> Mudança feita no Brand Editor e não commitada é apagada no próximo PR.
 
 **Sem Docker (dois terminais):**
 
@@ -162,7 +212,7 @@ git checkout -b feat/home-banner
 cd frontend && npm run dev
 
 # terminal 2 — envia para a instalação de homologação
-cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG
+(set -a && . ./.env && cd theme && nuvemshop theme watch --theme-id "$THEME_ID_HOMOLOG")
 ```
 
 Daí em diante vale o [fluxo de tema](#fluxo-de-tema-git--loja). Detalhes do front em **[docs/frontend.md](docs/frontend.md)**.

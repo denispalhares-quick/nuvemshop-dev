@@ -20,6 +20,7 @@
    config/ fica de fora: o settings_data.json contém o próprio CSS gerado. */
 @source "../../../theme/**/*.tpl";
 @source "../../../theme/templates/**/*.json";
+@source "../../../design/components/**/*.html";
 @source "../js/**/*.js";
 
 /* --------------------------------------------------------------------------
