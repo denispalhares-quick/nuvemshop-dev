@@ -95,7 +95,7 @@ Fluxo completo de desenvolvimento, com recarga na loja:
 cd frontend && npm run dev
 
 # terminal 2 — envia para a instalação de homologação
-cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG
+(set -a && . ./.env && cd theme && nuvemshop theme watch --theme-id "$THEME_ID_HOMOLOG")
 ```
 
 ## Referenciando os assets no `.tpl`
