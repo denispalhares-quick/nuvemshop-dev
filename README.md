@@ -217,6 +217,8 @@ Secrets do GitHub (Settings → Secrets and variables → Actions):
 | `THEME_ID_HOMOLOG` | ID da instalação de homolog (`nuvemshop theme list`) |
 | `THEME_ID_PROD` | ID da instalação publicada. **Deixe vazio enquanto ela for um tema legacy** — o job `prod` pula o deploy com um aviso |
 
+Variável (não é segredo, fica em **Variables**): `STORE_URL` com a URL da loja, ex. `https://quickstart2.lojavirtualnuvem.com.br` — usada para montar o link de preview no resumo do job `homolog`. O `theme preview` da CLI não funciona no CI: ele precisa do `store_url` do `.nuvem`, que o `--token` não traz.
+
 Os environments `homolog` e `production` são criados pelo GitHub na primeira execução.
 
 ## Multi-loja
