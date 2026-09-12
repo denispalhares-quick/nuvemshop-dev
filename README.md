@@ -153,6 +153,24 @@ container pelo volume). Se a CLI fizer alguma pergunta: `docker compose attach t
 
 Sem fork, só `templates/` e `config/settings_data.json` chegam na loja — veja [docs/frontend.md](docs/frontend.md#sem-fork-como-o-build-chega-na-loja).
 
+**Do Figma para a loja (`design/`):**
+
+O layout das páginas mora em [`design/`](design/README.md) e é montado pelo `frontend/compose.mjs`
+(no build, no Docker em watch e no CI):
+
+- `design/pages/home.yaml` — ordem das seções, misturando **seções nativas** do Ipanema (editáveis no
+  Brand Editor, com dados da loja) e **componentes custom**;
+- `design/components/*.html` — HTML + Tailwind (`tw:`) + Alpine, cada um vira uma seção "Personalizada";
+- `design/assets/` — imagens referenciadas como `asset:<caminho>`, servidas pelo jsDelivr no commit atual
+  (commite e dê push antes de olhar o preview).
+
+Duas skills do Claude Code conduzem o trabalho:
+
+| Skill | Quando |
+|---|---|
+| `figma-to-theme` | link do Figma → tokens, seções, componentes, imagens → homolog → PR/CI → publicar só com ok |
+| `brand-editor-sync` | ajustes feitos no Brand Editor → `pull` → rebuild → commit |
+
 **Editando pelo Brand Editor (montar home, trocar imagens, textos, cores):**
 
 O Brand Editor grava direto na loja, e o `theme watch` e o CI enviam os arquivos do repo. Se os dois

@@ -97,6 +97,17 @@ Resuma para o usuário o que mudou (seções da home em `theme/templates/pages/h
 `theme/config/settings_data.json`, imagens etc.). O diff do `css_code` e do block `nuvemshop_dev_js` do
 footer é esperado — é o build injetado.
 
+**Páginas com `design/pages/<pagina>.yaml`** (ex.: home): o `compose.mjs` roda no restart do passo 4 e
+reaplica o YAML por cima do que veio do pull.
+
+- Seções **nativas**: o que o usuário mudou no Brand Editor fica, **exceto** as chaves que o YAML declara
+  em `settings`/`blocks` — essas voltam ao valor do YAML. Se a mudança do editor deve valer, remova ou
+  atualize a chave no YAML.
+- **Componentes** (`cmp_*`): edições no block "Código" pelo editor são desfeitas — o conteúdo vem de
+  `design/components/`. Leve a mudança para o `.html`.
+- Seção **adicionada no editor** e ausente no YAML: fica no fim da página, com aviso no log. Pergunte ao
+  usuário se ela entra no YAML (e em que posição).
+
 Se estiver em `main`, crie uma branch antes. Commite só com o aval do usuário:
 
 ```bash

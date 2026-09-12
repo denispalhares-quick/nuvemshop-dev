@@ -27,8 +27,10 @@ services:
       sh -c "npm ci &&
              npx tailwindcss -i src/css/main.css -o ../theme/static/css/tailwind.css &&
              node build.mjs &&
+             node compose.mjs &&
              node inject.mjs &&
              (node build.mjs --watch &
+              node compose.mjs --watch &
               node inject.mjs --watch &
               npx tailwindcss -i src/css/main.css -o ../theme/static/css/tailwind.css --watch=always)"
     healthcheck:

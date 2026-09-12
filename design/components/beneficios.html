@@ -1,0 +1,36 @@
+<!--
+  Componente de exemplo: faixa de benefícios.
+
+  Regras (sem fork, o HTML vai cru num block "Código" — sem Twig):
+  - classes Tailwind SEMPRE com prefixo tw: (variantes depois: tw:md:grid-cols-3, tw:hover:underline)
+  - cores/fontes do Brand Editor: tw:bg-brand, tw:text-brand-accent, tw:font-display…
+  - imagens: src="asset:caminho/arquivo.webp" (design/assets)
+  - interatividade: Alpine (x-data, x-show…); componentes registrados em frontend/src/js
+  - nada de id em CSS; dados da loja (preço, estoque) não existem aqui — use seção nativa
+  Comentários HTML são removidos no build.
+-->
+<div class="tw:mx-auto tw:max-w-6xl tw:px-4 tw:py-8">
+  <ul class="tw:grid tw:grid-cols-1 tw:gap-6 tw:md:grid-cols-3">
+    <li class="tw:flex tw:items-start tw:gap-3">
+      <span class="tw:text-2xl tw:text-brand-accent" aria-hidden="true">🚚</span>
+      <div>
+        <p class="tw:font-display tw:font-bold">Frete grátis</p>
+        <p class="tw:text-sm tw:opacity-80">Em compras acima de R$ 299</p>
+      </div>
+    </li>
+    <li class="tw:flex tw:items-start tw:gap-3">
+      <span class="tw:text-2xl tw:text-brand-accent" aria-hidden="true">💳</span>
+      <div>
+        <p class="tw:font-display tw:font-bold">Até 6x sem juros</p>
+        <p class="tw:text-sm tw:opacity-80">Em todos os cartões</p>
+      </div>
+    </li>
+    <li class="tw:flex tw:items-start tw:gap-3">
+      <span class="tw:text-2xl tw:text-brand-accent" aria-hidden="true">↩️</span>
+      <div>
+        <p class="tw:font-display tw:font-bold">Troca fácil</p>
+        <p class="tw:text-sm tw:opacity-80">30 dias para trocar</p>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,32 @@
+# Home do tema — gera theme/templates/pages/home.json (frontend/compose.mjs).
+#
+# A ordem aqui é a ordem na loja. Dois tipos de item:
+#
+#   - native: <id>        seção nativa do Ipanema. A config atual (Brand Editor) é mantida;
+#                         settings/blocks declarados aqui sobrescrevem só essas chaves.
+#                         Seção nova: informe `type` (ver theme/sections/<type>.tpl).
+#
+#   - component: <nome>   design/components/<nome>.html (HTML + Tailwind tw: + Alpine).
+#                         `settings` opcional vai para a seção "Personalizada" que envolve o HTML.
+#
+# Imagens: "asset:<caminho>" -> design/assets/<caminho> servido pelo jsDelivr.
+
+sections:
+  - native: slideshow
+  - component: beneficios
+  - native: featured_products_1
+  - native: banners_grid_3_vertical
+
+# Exemplo de seção nativa nova e de override de imagem:
+#
+#  - native: hero_principal
+#    type: hero
+#    settings:
+#      image: "asset:home/hero.webp"
+#      image_mobile: "asset:home/hero-mobile.webp"
+#
+#  - native: slideshow
+#    blocks:
+#      slide_1:
+#        settings:
+#          image: "asset:home/slide-1.webp"

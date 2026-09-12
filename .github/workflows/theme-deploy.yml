@@ -43,6 +43,11 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Build do frontend
         working-directory: frontend
+        env:
+          # imagens de design/assets via jsDelivr: precisa de um commit que exista no GitHub
+          # (no PR o checkout é o merge commit, que não existe — usa o head do PR)
+          ASSETS_REPO: ${{ github.repository }}
+          ASSETS_REF: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm ci && npm run build
       - run: npm i -g @tiendanube/cli@${{ env.CLI_VERSION }}
       - name: Diff contra HOMOLOG
@@ -63,6 +68,11 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Build do frontend
         working-directory: frontend
+        env:
+          # imagens de design/assets via jsDelivr: precisa de um commit que exista no GitHub
+          # (no PR o checkout é o merge commit, que não existe — usa o head do PR)
+          ASSETS_REPO: ${{ github.repository }}
+          ASSETS_REF: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm ci && npm run build
       - run: npm i -g @tiendanube/cli@${{ env.CLI_VERSION }}
       - name: Push para HOMOLOG
@@ -115,6 +125,11 @@ jobs:
       - name: Build do frontend
         if: steps.check.outputs.skip != 'true'
         working-directory: frontend
+        env:
+          # imagens de design/assets via jsDelivr: precisa de um commit que exista no GitHub
+          # (no PR o checkout é o merge commit, que não existe — usa o head do PR)
+          ASSETS_REPO: ${{ github.repository }}
+          ASSETS_REF: ${{ github.event.pull_request.head.sha || github.sha }}
         run: npm ci && npm run build
       - if: steps.check.outputs.skip != 'true'
         run: npm i -g @tiendanube/cli@${{ env.CLI_VERSION }}
