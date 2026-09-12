@@ -213,7 +213,7 @@ Secrets do GitHub (Settings → Secrets and variables → Actions):
 
 | Secret | Valor |
 |---|---|
-| `NUVEMSHOP_CLI_TOKEN` | conteúdo do `theme/.nuvem` gerado pelo `nuvemshop theme authorize` — `gh secret set NUVEMSHOP_CLI_TOKEN < theme/.nuvem` |
+| `NUVEMSHOP_CLI_TOKEN` | Base64 de `{"store_id": <número>, "access_token": "<token>"}` — é o token que a página do `nuvemshop theme authorize` mostra para copiar. **Não é o `theme/.nuvem`** (formato diferente). Para gerar a partir do `.nuvem`: `scripts/cli-token.sh \| gh secret set NUVEMSHOP_CLI_TOKEN` |
 | `THEME_ID_HOMOLOG` | ID da instalação de homolog (`nuvemshop theme list`) |
 | `THEME_ID_PROD` | ID da instalação publicada. **Deixe vazio enquanto ela for um tema legacy** — o job `prod` pula o deploy com um aviso |
 
