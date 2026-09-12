@@ -1,11 +1,9 @@
 {
   "mcpServers": {
     "nuvemshop-dev": {
-      "command": "python3",
+      "command": ".venv/bin/python",
       "args": ["mcp-server/main.py"],
       "env": {
-        "TIENDANUBE_ACCESS_TOKEN": "${TIENDANUBE_ACCESS_TOKEN}",
-        "TIENDANUBE_STORE_ID": "${TIENDANUBE_STORE_ID}",
         "THEME_DIR": "theme"
       }
     }

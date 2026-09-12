@@ -19,7 +19,7 @@ nuvemshop-dev/
 │   ├── build.mjs          bundle com nome fixo (sem hash)
 │   └── src/{css,js}/
 ├── theme/                 tema da loja (pull via CLI) — versionado aqui
-│   └── static/            css/tokens.scss.tpl é fonte; style.css e store.js são gerados
+│   └── static/            do Ipanema; tailwind.css e app.js são gerados (e injetados, sem fork)
 ├── scripts/
 │   ├── get-token.py       troca o code do OAuth pelo access_token e grava no .env
 │   └── theme-push.sh      build + deploy manual: homolog | prod [--publish]
@@ -39,7 +39,7 @@ Passo a passo completo. Marque conforme for fazendo — o que trava a maioria da
 ### 1. Ferramentas
 
 ```bash
-cd mcp-server && pip install -r requirements.txt && cd ..
+python3 -m venv .venv && .venv/bin/pip install -r mcp-server/requirements.txt
 cd frontend && npm ci && cd ..
 npm install -g @tiendanube/cli
 nuvemshop --version          # confirma a instalação (o comando `tiendanube` é equivalente)
@@ -55,7 +55,11 @@ O token da API sai de um **app de parceiro**, não do painel da loja.
 2. No painel de parceiro, **Apps → criar app**. Anote o **App ID** (`client_id`) e o **Client Secret**.
    Nos scopes, marque o que o projeto vai usar (produtos, pedidos, clientes, webhooks…).
 3. Logado como **dono da loja**, abra no navegador:
-   `https://www.tiendanube.com/apps/<APP_ID>/authorize`
+   `https://www.nuvemshop.com.br/apps/<APP_ID>/authorize`
+   (lojas de outros países: `https://www.tiendanube.com/apps/<APP_ID>/authorize`)
+   Se cair no dashboard sem instalar, use o domínio da própria loja:
+   `https://<sualoja>.lojavirtualnuvem.com.br/admin/apps/<APP_ID>/authorize`
+   O `<APP_ID>` é o número no fim da URL do app no painel de parceiro — criar outro app gera outro ID e outro secret.
 4. Após autorizar, a URL de redirect traz `?code=XXXX`. **Esse code expira em 5 minutos.**
 5. Troque o code pelo token:
 
@@ -112,16 +116,44 @@ THEME_ID_PROD=...
 ### 6. Ligar o MCP no Claude
 
 ```bash
-cd mcp-server && python3 main.py                  # stdio (teste)
-MCP_TRANSPORT=streamable-http python3 main.py     # http://localhost:8080/mcp
+.venv/bin/python mcp-server/main.py                                  # stdio (teste)
+MCP_TRANSPORT=streamable-http .venv/bin/python mcp-server/main.py   # http://localhost:8080/mcp
 ```
 
-- **Claude Code:** abrir a pasta já carrega o `.mcp.json` (exporte as env vars do `.env` antes).
+- **Claude Code:** abrir a pasta já carrega o `.mcp.json`, que usa o `.venv` e lê o `.env` sozinho.
 - **Claude Desktop:** copie `claude-desktop.example.json` para a config do app e preencha o token/store_id.
 
 Teste rápido pelo chat: *"lista as categorias da loja"* e *"roda theme_diff"*.
 
 ### 7. Desenvolver
+
+**Com Docker (um comando):**
+
+```bash
+docker compose up
+```
+
+Sobe três serviços:
+
+| Serviço | O que faz |
+|---|---|
+| `frontend` | recompila Tailwind + JS a cada save e injeta em `settings_data.json` / `footer.json` |
+| `theme` | `nuvemshop theme watch` envia cada arquivo alterado para o `THEME_ID_HOMOLOG` |
+| `mcp` | MCP server em `http://localhost:8080/mcp` |
+
+Você edita os arquivos normalmente no seu editor. A loja **não roda local** — o Twig é renderizado pela
+Nuvemshop —, então o resultado aparece na URL de preview:
+
+```bash
+cd theme && nuvemshop theme preview --theme-id $THEME_ID_HOMOLOG
+```
+
+Pré-requisitos: `.env` preenchido e `nuvemshop theme authorize` feito no host (o `theme/.nuvem` entra no
+container pelo volume). Se a CLI fizer alguma pergunta: `docker compose attach theme`.
+
+Sem fork, só `templates/` e `config/settings_data.json` chegam na loja — veja [docs/frontend.md](docs/frontend.md#sem-fork-como-o-build-chega-na-loja).
+
+**Sem Docker (dois terminais):**
 
 ```bash
 git checkout -b feat/home-banner
@@ -144,12 +176,15 @@ O tema **não** é só HTML/CSS/JS: a Nuvemshop roda **Twig** e compila **SASS**
 | Camada | Onde roda | No repo |
 |---|---|---|
 | Twig (`.tpl`) | servidor da Nuvemshop | `theme/` |
-| SASS (`.scss.tpl`) | servidor da Nuvemshop | `theme/static/css/tokens.scss.tpl` |
+| SASS (`.scss.tpl`) | servidor da Nuvemshop | `theme/static/` (só com fork) |
 | CSS/JS estáticos | navegador | build de `frontend/src/` → `theme/static/` |
 
-- **Tailwind v4** → `theme/static/css/style.css`
-- **esbuild + Alpine.js** → `theme/static/js/store.js` (nome fixo: o `.tpl` referencia o arquivo literalmente, e não há manifest de assets na plataforma)
-- **`tokens.scss.tpl`** faz a ponte entre as cores do Brand Editor e o Tailwind, via CSS custom properties
+- **Tailwind v4** → `theme/static/css/tailwind.css` (sem preflight, classes com prefixo `tw:` para não brigar com o CSS do Ipanema)
+- **esbuild + Alpine.js** → `theme/static/js/app.js`. **Não** é o `store.js`: esse é o JS nativo do Ipanema.
+- **Sem fork** (a plataforma ainda não libera), `static/` não é enviado. O `frontend/inject.mjs` leva o CSS para o
+  `css_code` do `config/settings_data.json` e o JS para um block "Código" no `templates/layout/footer.json` — os dois
+  aparecem em todas as páginas.
+- **Brand Editor → Tailwind**: o `main.css` usa as CSS custom properties que o Ipanema já gera (`--accent-color`, `--body-font`…)
 
 Saída de build é gitignorada — quem gera é o CI. Nada de SPA: o HTML já vem renderizado, o JS é progressive enhancement.
 
@@ -189,7 +224,7 @@ Validar no primeiro projeto real:
 - [ ] Qual header a API aceita: o server manda `Authentication: bearer` **e** `Authorization: Bearer`; confirmar e remover o que sobrar.
 - [ ] Comportamento sob rate limit em carga de catálogo grande (ver abaixo).
 - [ ] **Cache-busting dos assets**: com nome fixo e sem hash, não está documentado se o `static_url` versiona a URL a cada revisão do tema. Testar no primeiro deploy; se não versionar, usar sufixo manual via setting.
-- [ ] Nomes dos settings em `theme/static/css/tokens.scss.tpl` — conferir contra o tema real depois do `theme pull`.
+- [ ] Confirmar no preview (logado no admin) que o `css_code` e o block "Código" do footer são impressos sem filtro.
 
 ## Ressalvas
 

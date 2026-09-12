@@ -5,7 +5,7 @@ Troca o `code` do OAuth pelo access_token da loja.
 Uso:
   1. Crie o app em https://www.nuvemshop.com.br/parceiros (anote App ID e Client Secret)
   2. Abra no navegador, logado como dono da loja:
-       https://www.tiendanube.com/apps/<APP_ID>/authorize
+       https://www.nuvemshop.com.br/apps/<APP_ID>/authorize
   3. Após autorizar, a URL de redirect traz ?code=XXXX  (vale 5 minutos)
   4. python3 scripts/get-token.py --app-id <APP_ID> --secret <SECRET> --code <CODE>
 
@@ -71,7 +71,13 @@ def main() -> int:
 
     token, store_id = data.get("access_token"), str(data.get("user_id", ""))
     if not token:
-        print(f"Resposta inesperada: {data}", file=sys.stderr)
+        print(f"Erro: {data}", file=sys.stderr)
+        err = data.get("error")
+        if err == "invalid_client":
+            print("Dica: App ID ou Client Secret errados — confira no painel de parceiro.", file=sys.stderr)
+        elif err == "invalid_grant":
+            print("Dica: o `code` expirou (5 min) ou já foi usado — abra a URL de authorize de novo "
+                  "e rode o script logo em seguida.", file=sys.stderr)
         return 1
 
     print(f"access_token : {token}")

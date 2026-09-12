@@ -1,0 +1,79 @@
+{
+  "type": "footer",
+  "name": "Rodapé da página",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "background_color": "#FFFFFF",
+        "text_color": "#000000",
+        "vertical_padding": 108,
+        "menus_toggle": true,
+        "footer_payments_show": true,
+        "footer_shipping_show": true,
+        "section_width": "full",
+        "horizontal_padding": 40
+      },
+      "blocks": {
+        "menu_1": {
+          "type": "footer-menu",
+          "settings": {
+            "title": "Seu título aqui",
+            "menu": "navigation"
+          }
+        },
+        "menu_2": {
+          "type": "footer-menu",
+          "settings": {
+            "title": "Seu título aqui",
+            "menu": "navigation"
+          }
+        },
+        "menu_3": {
+          "type": "footer-menu",
+          "settings": {
+            "title": "Seu título aqui",
+            "menu": "navigation"
+          }
+        },
+        "institutional": {
+          "type": "footer-institutional",
+          "settings": {
+            "description": "Nossa marca tem uma tradição que é transmitida há 3 gerações. Isso nos permite garantir e oferecer a mais alta qualidade em nossos produtos.",
+            "logo_height": 40,
+            "show_contact": false
+          }
+        }
+      },
+      "block_order": [
+        "institutional",
+        "menu_1",
+        "menu_2",
+        "menu_3"
+      ]
+    },
+    "nuvemshop_dev_js": {
+      "type": "custom",
+      "settings": {
+        "section_width": "full",
+        "vertical_padding": 0,
+        "horizontal_padding": 0
+      },
+      "blocks": {
+        "code": {
+          "type": "code",
+          "settings": {
+            "code": "<script>(() => {\n  // src/js/components/mini-cart.js\n  function miniCart() {\n    return {\n      open: false,\n      toggle() {\n        this.open = !this.open;\n      },\n      close() {\n        this.open = false;\n      },\n      init() {\n        document.addEventListener(\"cart.updated\", () => {\n          this.open = true;\n        });\n      }\n    };\n  }\n\n  // src/js/components/product-gallery.js\n  function productGallery() {\n    return {\n      current: null,\n      index: 0,\n      init() {\n        const first = this.$el.querySelector(\"[data-image]\");\n        this.current = first ? first.dataset.image : null;\n      },\n      select(src, index = 0) {\n        this.current = src;\n        this.index = index;\n      }\n    };\n  }\n\n  // src/js/main.js\n  document.addEventListener(\"alpine:init\", () => {\n    window.Alpine.data(\"miniCart\", miniCart);\n    window.Alpine.data(\"productGallery\", productGallery);\n  });\n})();</script>\n<script defer src=\"https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.17.2/dist/cdn.min.js\"></script>\n<script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.17.2/dist/cdn.min.js\"></script>"
+          }
+        }
+      },
+      "block_order": [
+        "code"
+      ]
+    }
+  },
+  "order": [
+    "footer",
+    "nuvemshop_dev_js"
+  ]
+}
