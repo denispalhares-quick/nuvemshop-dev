@@ -8,11 +8,12 @@ venv/
 node_modules/
 .DS_Store
 # metadados locais da CLI (contêm installation_id/revision_token — nunca versionar)
-theme/.nuvem
+.nuvem
 theme/manifest.json
 
 # build do frontend (gerado pelo CI — nunca commitar)
 frontend/node_modules/
-theme/static/css/style.css
-theme/static/js/store.js
-theme/static/js/store.js.map
+# (store.js e style-*.css são do Ipanema — esses sim vão pro git)
+theme/static/css/tailwind.css
+theme/static/js/app.js
+theme/static/js/app.js.map

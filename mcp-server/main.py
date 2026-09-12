@@ -35,7 +35,7 @@ except ImportError:
     pass
 from mcp.server.fastmcp import FastMCP
 from starlette.requests import Request
-from starlette.responses import PlainTextResponse, Response
+from starlette.responses import JSONResponse, PlainTextResponse, Response
 
 # Configuration
 @dataclass
@@ -99,7 +99,7 @@ mcp = FastMCP(
 # Health check endpoint
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(request: Request) -> Response:
-    return Response({'status': 'ok'}, media_type="application/json")
+    return JSONResponse({'status': 'ok'})
 
 
 # Helper function to get config
@@ -2507,7 +2507,9 @@ def main():
         print(f"🔗 Connect clients to: http://{host}:{port}/sse")
         print("⚠️  Note: SSE is deprecated, use streamable-http for production")
         print("=" * 60)
-        mcp.run(transport="sse", host=host, port=port)
+        # mcp 1.x: host/port vão em settings, não em run()
+        mcp.settings.host, mcp.settings.port = host, port
+        mcp.run(transport="sse")
         
     elif transport == "streamable-http":
         print(f"📡 Streamable HTTP Server listening on http://{host}:{port}/mcp")
@@ -2521,8 +2523,10 @@ def main():
             mcp.settings.stateless_http = True
         if json_response:
             mcp.settings.json_response = True
-            
-        mcp.run(transport="streamable-http", host=host, port=port)
+
+        # mcp 1.x: host/port vão em settings, não em run()
+        mcp.settings.host, mcp.settings.port = host, port
+        mcp.run(transport="streamable-http")
         
     else:
         print("📝 Running with stdio transport (for CLI usage)")

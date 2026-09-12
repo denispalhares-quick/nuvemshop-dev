@@ -1,0 +1,234 @@
+{
+  "sections": {
+    "slideshow": {
+      "type": "slideshow",
+      "settings": {
+        "autoplay": false
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "alignment": "center",
+            "gap": 16,
+            "vertical_padding": 32,
+            "horizontal_padding": 32,
+            "text_color": "#FFFF00"
+          },
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Título",
+                "size": "custom",
+                "custom_font_size": 118,
+                "custom_mobile_font_size": 90,
+                "mobile_font_size": true
+              }
+            },
+            "button": {
+              "type": "button",
+              "settings": {
+                "label": "Ver mais",
+                "variant": "primary",
+                "size": "big"
+              }
+            }
+          },
+          "block_order": [
+            "heading",
+            "button"
+          ]
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "alignment": "center",
+            "gap": 16,
+            "vertical_padding": 32,
+            "horizontal_padding": 32,
+            "text_color": "#FFFF00"
+          },
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Título",
+                "size": "custom",
+                "custom_font_size": 118,
+                "custom_mobile_font_size": 90,
+                "mobile_font_size": true
+              }
+            },
+            "text": {
+              "type": "text",
+              "settings": {
+                "text": "Descrição do slide",
+                "size": "paragraph_big"
+              }
+            },
+            "button": {
+              "type": "button",
+              "settings": {
+                "label": "Ver mais",
+                "variant": "primary",
+                "size": "big"
+              }
+            }
+          },
+          "block_order": [
+            "heading",
+            "text",
+            "button"
+          ]
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ]
+    },
+    "featured_products_1": {
+      "type": "product-list",
+      "settings": {
+        "alignment": "center",
+        "section_width": "page",
+        "gap": 20,
+        "vertical_padding": 64
+      },
+      "blocks": {
+        "header_group": {
+          "type": "group",
+          "settings": {
+            "direction": "row",
+            "alignment": "center",
+            "alignment_vertical": "center"
+          },
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Seu título aqui",
+                "size": "h5"
+              }
+            },
+            "view_all_button": {
+              "type": "view-all-button",
+              "settings": {
+                "label": "Ver mais",
+                "variant": "secondary"
+              }
+            }
+          },
+          "block_order": [
+            "heading",
+            "view_all_button"
+          ]
+        },
+        "products": {
+          "type": "products",
+          "settings": {
+            "products_source": null,
+            "format": "slider",
+            "columns": "4",
+            "columns_mobile": "1"
+          }
+        }
+      },
+      "block_order": [
+        "header_group",
+        "products"
+      ]
+    },
+    "banners_grid_3_vertical": {
+      "type": "banners",
+      "settings": {
+        "format": "grid",
+        "columns": "2",
+        "columns_mobile": "1",
+        "section_width": "page",
+        "banner_aspect_ratio": "original",
+        "gap": 16,
+        "vertical_padding": 0,
+        "horizontal_padding": 0
+      },
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "text_outside": false,
+            "alignment": "center",
+            "alignment_vertical": "center",
+            "gap": 8,
+            "vertical_padding": 24,
+            "horizontal_padding": 24,
+            "text_color": "#FFFF00"
+          },
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Título",
+                "size": "h1"
+              }
+            },
+            "button": {
+              "type": "button",
+              "settings": {
+                "label": "Ver mais",
+                "variant": "primary",
+                "size": "medium"
+              }
+            }
+          },
+          "block_order": [
+            "heading",
+            "button"
+          ]
+        },
+        "banner": {
+          "type": "banner",
+          "settings": {
+            "text_outside": false,
+            "alignment": "center",
+            "alignment_vertical": "center",
+            "gap": 8,
+            "vertical_padding": 24,
+            "horizontal_padding": 24,
+            "text_color": "#FFFF00"
+          },
+          "blocks": {
+            "heading": {
+              "type": "heading",
+              "settings": {
+                "title": "Título",
+                "size": "h1"
+              }
+            },
+            "button": {
+              "type": "button",
+              "settings": {
+                "label": "Ver mais",
+                "variant": "primary",
+                "size": "medium"
+              }
+            }
+          },
+          "block_order": [
+            "heading",
+            "button"
+          ]
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner"
+      ]
+    }
+  },
+  "order": [
+    "slideshow",
+    "featured_products_1",
+    "banners_grid_3_vertical"
+  ]
+}

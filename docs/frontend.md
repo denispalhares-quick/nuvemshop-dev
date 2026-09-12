@@ -17,12 +17,50 @@ settings do lojista fica em `.scss.tpl` e é compilado lá.
 
 ## Stack
 
-- **Tailwind v4** → `theme/static/css/style.css`
-- **esbuild + Alpine.js** → `theme/static/js/store.js`
-- **`tokens.scss.tpl`** → ponte entre o Brand Editor e o Tailwind
+- **Tailwind v4** → `theme/static/css/tailwind.css` → injetado em `config/settings_data.json` (`css_code`)
+- **esbuild** → `theme/static/js/app.js` → injetado em `templates/layout/footer.json` (block `code`), com **Alpine.js via CDN**
+- **`frontend/inject.mjs`** → faz as duas injeções (roda no `npm run build` e no `npm run dev`)
+
+## Sem fork: como o build chega na loja
+
+A plataforma ainda não libera fork (`Forking not yet allowed. Coming soon...`). Sem fork, o
+`theme push/watch` **só envia `templates/` e `config/settings_data.json`** — `static/`, `layouts/`,
+`sections/`, `blocks/` e `snippets/` aparecem como *Skipped*. Por isso o build entra por dois
+pontos que o Ipanema já expõe:
+
+| Build | Destino | Por que funciona |
+|---|---|---|
+| `tailwind.css` | `settings.css_code` em `config/settings_data.json` | o `layout.tpl` imprime `{{ settings.css_code \| raw }}` em todas as páginas |
+| `app.js` | section `custom` (`nuvemshop_dev_js`) + block `code` em `templates/layout/footer.json` | o footer é layout: aparece em todas as páginas; o block `code` imprime HTML cru |
+
+Detalhes do `inject.mjs`:
+
+- O CSS fica entre `/* nuvemshop-dev:start */` e `/* nuvemshop-dev:end */`. **O que estiver fora dos
+  marcadores é preservado** — CSS que o lojista colar no Brand Editor não é apagado.
+- O Alpine e o plugin collapse vêm do jsDelivr **na versão travada no `package-lock.json`**. O bundle
+  só registra os componentes no evento `alpine:init`.
+- Só grava quando o conteúdo muda, para não entrar em loop com os watchers.
+- **Não edite o block "Código" do footer pelo Brand Editor**: o próximo build sobrescreve.
+- `config/settings_data.json` também guarda as configurações do Brand Editor. Mudanças feitas
+  direto na loja precisam de um `theme pull` antes do próximo push, senão o push as desfaz.
+
+HTML próprio (com classes `tw:`) entra em blocks "Código" nos templates JSON — por isso o Tailwind
+também lê `theme/templates/**/*.json`.
 
 Fonte em `frontend/src/`, saída em `theme/static/`. A saída é **gitignorada** — quem
 gera é o build (local ou CI).
+
+### Convivência com o Ipanema
+
+O tema já traz CSS e JS próprios (`style-critical.css`, `style-utilities.css`,
+`style-async.css`, `js/store.js`). O build **soma** a eles, não substitui:
+
+- **Nunca gere `store.js` ou `style-*.css`** — são do Ipanema, vêm do `theme pull` e vão pro git.
+- **Sem preflight**: o reset do Tailwind apagaria os estilos base do tema.
+- **Prefixo `tw:`**: o Ipanema já usa `.hidden`, `.container`, `.flex`… Sem prefixo o
+  Tailwind geraria as dele a partir dos `.tpl` e mudaria o layout. Escreva `tw:flex`, `tw:bg-brand`.
+- **Utilities fora de `@layer`**: o CSS do Ipanema não usa layers, e CSS em layer
+  sempre perde para CSS sem layer. Assim uma classe `tw:` consegue sobrescrever o tema.
 
 ```
 frontend/
@@ -35,9 +73,10 @@ frontend/
         └── components/        um arquivo por componente
 
 theme/static/
-├── css/tokens.scss.tpl        FONTE (compilado pela Nuvemshop)
-├── css/style.css              GERADO pelo build
-└── js/store.js                GERADO pelo build
+├── css/tailwind.css           GERADO pelo build
+├── css/style-*.css            do Ipanema (não mexer pelo build)
+├── js/app.js                  GERADO pelo build
+└── js/store.js                do Ipanema (não mexer pelo build)
 ```
 
 ## Comandos
@@ -45,7 +84,7 @@ theme/static/
 ```bash
 cd frontend
 npm install        # primeira vez
-npm run build      # gera style.css e store.js minificados
+npm run build      # gera tailwind.css e app.js minificados
 npm run dev        # watch de CSS e JS ao mesmo tempo
 ```
 
@@ -61,16 +100,19 @@ cd theme && nuvemshop theme watch --theme-id $THEME_ID_HOMOLOG
 
 ## Referenciando os assets no `.tpl`
 
-A plataforma usa o filtro `static_url`, encadeado com `css_tag` / `script_tag`:
+> **Só vale com fork.** Hoje o build entra pelo `inject.mjs` (seção acima). Quando o fork for
+> liberado, dá para trocar o inject por arquivos em `static/` referenciados no `layout.tpl`.
+
+A plataforma usa o filtro `static_url`, encadeado com `css_tag` / `script_tag`,
+depois do CSS do Ipanema no `theme/layouts/layout.tpl`:
 
 ```twig
-{{ 'css/tokens.scss.tpl' | static_url | css_tag }}
-{{ 'css/style.css'       | static_url | css_tag }}
-{{ 'js/store.js'         | static_url | script_tag }}
+{{ 'css/tailwind.css' | static_url | css_tag }}
+…
+{{ 'js/app.js'        | static_url | script_tag }}
 ```
 
-O `tokens.scss.tpl` precisa vir **antes** do `style.css`: ele define as variáveis
-que o Tailwind consome.
+O `tailwind.css` precisa vir **depois** do CSS do Ipanema, para as classes `tw:` conseguirem sobrescrever.
 
 Dentro de CSS/SASS, imagens também precisam do helper — caminho relativo não funciona:
 
@@ -82,39 +124,34 @@ Dentro de CSS/SASS, imagens também precisam do helper — caminho relativo não
 
 O `.tpl` referencia o arquivo **literalmente**. Não existe manifest de assets na
 plataforma para reescrever `store.a3f9c1.js` a cada build, então a saída tem nome
-fixo (`style.css`, `store.js`).
+fixo (`tailwind.css`, `app.js`).
 
 **Isso deixa o cache-busting em aberto** — não está documentado se o `static_url`
 versiona a URL a cada revisão do tema. Confirme no primeiro deploy: publique uma
 mudança de cor óbvia e veja se aparece sem hard refresh. Se não aparecer, a saída é
-um sufixo manual controlado por setting (`style.css?v={{ settings.asset_version }}`).
+um sufixo manual controlado por setting (`tailwind.css?v={{ settings.asset_version }}`).
 
 ## Ponte com o Brand Editor
 
 Sem isso, você ganha Tailwind e perde o editor visual do lojista — troca ruim
 para loja de cliente.
 
-`theme/static/css/tokens.scss.tpl` (compilado pela Nuvemshop, com os settings):
-
-```scss
-:root {
-  --brand-primary: {{ settings.primary_color }};
-}
-```
-
-`frontend/src/css/main.css` (compilado localmente, consome a variável):
+O `css_code` é CSS puro — não passa pelo Twig, então não dá para interpolar settings nele.
+Em vez disso, o `main.css` consome as variáveis que o **próprio Ipanema** já gera a partir dos
+settings em `theme/layouts/resources/style-tokens.tpl`:
 
 ```css
 @theme {
-  --color-brand: var(--brand-primary, #1a1a1a);
+  --color-brand: var(--button-primary-background-color, #1a1a1a);
+  --color-brand-accent: var(--accent-color, #6366f1);
+  --font-sans: var(--body-font, ui-sans-serif, system-ui, sans-serif);
 }
 ```
 
-No template, `bg-brand` passa a seguir a cor escolhida no editor.
+No template, `tw:bg-brand` passa a seguir a cor escolhida no editor.
 
-> Os nomes dos settings em `tokens.scss.tpl` são um palpite e **precisam ser
-> conferidos** contra o tema real depois do `theme pull` — cada tema define os
-> seus. Setting inexistente renderiza vazio e a variável cai no fallback.
+> Se trocar de tema, confira os nomes das variáveis de novo — cada tema define as suas.
+> Com fork, um `.scss.tpl` em `static/` também serviria: ele passa pelo Twig e pode interpolar settings.
 
 ## JavaScript: progressive enhancement
 
