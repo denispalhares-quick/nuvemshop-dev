@@ -209,7 +209,15 @@ Guia completo: **[docs/frontend.md](docs/frontend.md)**.
 4. Merge em `main` → CI faz push em **prod**
 5. `workflow_dispatch` com `publish=true` (ou `scripts/theme-push.sh prod --publish`) para ativar
 
-Secrets do GitHub: `NUVEMSHOP_CLI_TOKEN`, `THEME_ID_HOMOLOG`, `THEME_ID_PROD` (crie os environments `homolog` e `production`).
+Secrets do GitHub (Settings → Secrets and variables → Actions):
+
+| Secret | Valor |
+|---|---|
+| `NUVEMSHOP_CLI_TOKEN` | conteúdo do `theme/.nuvem` gerado pelo `nuvemshop theme authorize` — `gh secret set NUVEMSHOP_CLI_TOKEN < theme/.nuvem` |
+| `THEME_ID_HOMOLOG` | ID da instalação de homolog (`nuvemshop theme list`) |
+| `THEME_ID_PROD` | ID da instalação publicada. **Deixe vazio enquanto ela for um tema legacy** — o job `prod` pula o deploy com um aviso |
+
+Os environments `homolog` e `production` são criados pelo GitHub na primeira execução.
 
 ## Multi-loja
 

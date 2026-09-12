@@ -17,11 +17,24 @@ concurrency:
   group: theme-${{ github.ref }}
   cancel-in-progress: false
 
+env:
+  # mesma versão do docker/theme-dev.Dockerfile
+  CLI_VERSION: 2.3.0
+
 jobs:
   diff:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
+      - name: Conferir secrets
+        env:
+          THEME_ID: ${{ secrets.THEME_ID_HOMOLOG }}
+          TOKEN: ${{ secrets.NUVEMSHOP_CLI_TOKEN }}
+        run: |
+          if [ -z "$THEME_ID" ] || [ -z "$TOKEN" ]; then
+            echo "::error::Faltam os secrets THEME_ID_HOMOLOG e/ou NUVEMSHOP_CLI_TOKEN (Settings > Secrets and variables > Actions). Veja o README, seção 'Fluxo de tema'."
+            exit 1
+          fi
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -31,7 +44,7 @@ jobs:
       - name: Build do frontend
         working-directory: frontend
         run: npm ci && npm run build
-      - run: npm i -g @tiendanube/cli
+      - run: npm i -g @tiendanube/cli@${{ env.CLI_VERSION }}
       - name: Diff contra HOMOLOG
         working-directory: theme
         run: nuvemshop theme diff --theme-id "${{ secrets.THEME_ID_HOMOLOG }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" --detailed
@@ -51,7 +64,7 @@ jobs:
       - name: Build do frontend
         working-directory: frontend
         run: npm ci && npm run build
-      - run: npm i -g @tiendanube/cli
+      - run: npm i -g @tiendanube/cli@${{ env.CLI_VERSION }}
       - name: Push para HOMOLOG
         working-directory: theme
         run: nuvemshop theme push --theme-id "${{ secrets.THEME_ID_HOMOLOG }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" -y
@@ -64,20 +77,40 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # THEME_ID_PROD fica vazio de propósito enquanto o tema publicado for o Morelia
+      # (legacy: a API recusa push). Preencha quando o Ipanema for publicado.
+      - name: Conferir secrets
+        id: check
+        env:
+          THEME_ID: ${{ secrets.THEME_ID_PROD }}
+          TOKEN: ${{ secrets.NUVEMSHOP_CLI_TOKEN }}
+        run: |
+          if [ -z "$THEME_ID" ]; then
+            echo "::warning::THEME_ID_PROD vazio — deploy de produção pulado."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [ -z "$TOKEN" ]; then
+            echo "::error::Falta o secret NUVEMSHOP_CLI_TOKEN."
+            exit 1
+          fi
+      - if: steps.check.outputs.skip != 'true'
+        uses: actions/checkout@v4
+      - if: steps.check.outputs.skip != 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - name: Build do frontend
+        if: steps.check.outputs.skip != 'true'
         working-directory: frontend
         run: npm ci && npm run build
-      - run: npm i -g @tiendanube/cli
+      - if: steps.check.outputs.skip != 'true'
+        run: npm i -g @tiendanube/cli@${{ env.CLI_VERSION }}
       - name: Push para PROD
+        if: steps.check.outputs.skip != 'true'
         working-directory: theme
         run: nuvemshop theme push --theme-id "${{ secrets.THEME_ID_PROD }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" -y
       - name: Publicar (opcional)
-        if: inputs.publish == true
+        if: steps.check.outputs.skip != 'true' && inputs.publish == true
         working-directory: theme
         run: nuvemshop theme publish --theme-id "${{ secrets.THEME_ID_PROD }}" --token "${{ secrets.NUVEMSHOP_CLI_TOKEN }}" -y
