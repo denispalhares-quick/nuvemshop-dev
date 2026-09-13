@@ -17,10 +17,11 @@ sections:
   # Figma: carrossel "SMART WEARABLE." — fundo escuro, texto à esquerda, oferta abaixo
   - native: slideshow
     settings:
-      section_width: page
+      section_width: full
+      horizontal_padding: 0
       autoplay: true
       autoplay_speed: 6
-      vertical_padding: 24
+      vertical_padding: 0
     blocks:
       slide_1:
         settings:

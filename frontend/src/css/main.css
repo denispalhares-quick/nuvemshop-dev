@@ -50,3 +50,16 @@
 [x-cloak] {
   display: none !important;
 }
+
+/* --------------------------------------------------------------------------
+   Correções do Ipanema (sem fork, só dá para sobrescrever CSS)
+   -------------------------------------------------------------------------- */
+
+/* Logo em texto (loja sem imagem de logo): .logo-text-container tem
+   margin: auto e max-width 450px, o que centraliza o nome da loja mesmo com
+   "logo à esquerda". Encosta na esquerda quando o layout é logo-left. */
+.logo-left .logo-text-container,
+.logo-md-left .logo-text-container {
+  margin-left: 0;
+  margin-right: 0;
+}
