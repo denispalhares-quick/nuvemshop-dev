@@ -93,7 +93,7 @@ sections:
         blocks:
           heading:
             settings:
-              title: As melhores ofertas em smartphones
+              title: Destaques da loja
               size: h4
           view_all_button:
             settings:
@@ -102,11 +102,11 @@ sections:
       products:
         settings:
           format: grid
-          columns: "5"
+          columns: "4"
           columns_mobile: "2"
           use_different_mobile_format: true
           format_mobile: slider
-          max_products: 10
+          max_products: 8
 
   # Figma: "Shop From Top Categories" — categorias em círculos
   - component: categorias-circulos

@@ -1,8 +1,9 @@
 <!--
   Figma "Shop From Top Categories" (frame 1:2) com a identidade da Quick Digital.
-  Imagens: placeholders do Ipanema em design/assets/home/. Troque imagens, nomes e links
-  (/categoria/<handle>/) quando a loja tiver categorias.
-  Desktop: 7 colunas. Celular: rolagem horizontal com snap.
+  Categorias reais da loja (API): Calças (/calcas/) e Camisas (/camisas/) + atalho para todos os produtos.
+  Imagens: placeholders do Ipanema em design/assets/home/ — troque quando houver fotos das categorias.
+  Ao criar categorias novas, adicione um <li> com o handle dela (Produtos > Categorias no admin).
+  Desktop: itens de 132px alinhados à esquerda. Celular: rolagem horizontal com snap.
 -->
 <section class="container tw:py-10 tw:md:py-14" aria-label="Compre por categorias">
   <div class="tw:flex tw:items-end tw:justify-between tw:gap-4 tw:border-b tw:border-[#D1D5DB]">
@@ -14,61 +15,29 @@
     </a>
   </div>
 
-  <ul class="tw:m-0 tw:mt-8 tw:flex tw:list-none tw:snap-x tw:gap-5 tw:overflow-x-auto tw:p-0 tw:pb-2 tw:md:grid tw:md:grid-cols-7 tw:md:gap-6 tw:md:overflow-visible">
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
-      <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
+  <ul class="tw:m-0 tw:mt-8 tw:flex tw:list-none tw:snap-x tw:gap-5 tw:overflow-x-auto tw:p-0 tw:pb-2 tw:md:gap-10 tw:md:overflow-visible">
+    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-32">
+      <a href="/calcas/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
         <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
           <img src="asset:home/categoria-1.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
         </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Celulares</span>
+        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Calças</span>
       </a>
     </li>
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
-      <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
+    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-32">
+      <a href="/camisas/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
         <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
           <img src="asset:home/categoria-2.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
         </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Beleza</span>
+        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Camisas</span>
       </a>
     </li>
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
+    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-32">
       <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
-        <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
-          <img src="asset:home/categoria-3.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
+        <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#000066] tw:ring-1 tw:ring-[#000066] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
+          <span class="tw:font-display tw:text-3xl tw:font-black tw:text-white" aria-hidden="true">+</span>
         </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Eletrônicos</span>
-      </a>
-    </li>
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
-      <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
-        <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
-          <img src="asset:home/categoria-4.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
-        </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Casa</span>
-      </a>
-    </li>
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
-      <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
-        <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
-          <img src="asset:home/categoria-5.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
-        </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Relógios</span>
-      </a>
-    </li>
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
-      <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
-        <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
-          <img src="asset:home/categoria-6.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
-        </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Decoração</span>
-      </a>
-    </li>
-    <li class="tw:w-24 tw:shrink-0 tw:snap-start tw:md:w-auto">
-      <a href="/produtos/" class="tw:group tw:flex tw:flex-col tw:items-center tw:gap-3 tw:no-underline">
-        <span class="tw:flex tw:aspect-square tw:w-full tw:items-center tw:justify-center tw:overflow-hidden tw:rounded-full tw:bg-[#F8F9FC] tw:ring-1 tw:ring-[#E5E7EB] tw:transition tw:group-hover:ring-2 tw:group-hover:ring-brand">
-          <img src="asset:home/categoria-7.webp" alt="" width="132" height="132" loading="lazy" class="tw:size-full tw:object-cover">
-        </span>
-        <span class="tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Acessórios</span>
+        <span class="tw:text-center tw:text-sm tw:font-semibold tw:text-[#1F2937] tw:group-hover:text-brand">Todos os produtos</span>
       </a>
     </li>
   </ul>
