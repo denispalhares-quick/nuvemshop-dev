@@ -99,8 +99,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      # THEME_ID_PROD fica vazio de propósito enquanto o tema publicado for o Morelia
-      # (legacy: a API recusa push). Preencha quando o Ipanema for publicado.
+      # THEME_ID_PROD = instalação publicada (a loja no ar). Com ele preenchido, todo push
+      # na main envia o tema para produção. Deixar vazio desliga o deploy (o job só avisa) —
+      # útil se o tema publicado for legacy, que a API recusa.
       - name: Conferir secrets
         id: check
         env:

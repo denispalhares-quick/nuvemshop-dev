@@ -278,7 +278,7 @@ Secrets do GitHub (Settings → Secrets and variables → Actions):
 |---|---|
 | `NUVEMSHOP_CLI_TOKEN` | Base64 de `{"store_id": <número>, "access_token": "<token>"}` — é o token que a página do `nuvemshop theme authorize` mostra para copiar. **Não é o `theme/.nuvem`** (formato diferente). Para gerar a partir do `.nuvem`: `scripts/cli-token.sh \| gh secret set NUVEMSHOP_CLI_TOKEN` |
 | `THEME_ID_HOMOLOG` | ID da instalação de homolog (`nuvemshop theme list`) |
-| `THEME_ID_PROD` | ID da instalação publicada. **Deixe vazio enquanto ela for um tema legacy** — o job `prod` pula o deploy com um aviso |
+| `THEME_ID_PROD` | ID da instalação **publicada** (a loja no ar). Preenchido, **todo merge na `main` publica**. Vazio, o job `prod` só avisa e pula — use se o tema publicado for legacy (a API recusa push) ou para pausar o deploy |
 
 Variável (não é segredo, fica em **Variables**): `STORE_URL` com a URL da loja, ex. `https://quickstart2.lojavirtualnuvem.com.br` — usada para montar o link de preview no resumo do job `homolog`. O `theme preview` da CLI não funciona no CI: ele precisa do `store_url` do `.nuvem`, que o `--token` não traz.
 
