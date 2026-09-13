@@ -49,7 +49,26 @@ services:
     # se a CLI fizer alguma pergunta: docker compose attach theme
     tty: true
     stdin_open: true
-    command: sh -c 'nuvemshop theme watch --theme-id "$$THEME_ID_HOMOLOG" --no-browser'
+    # Mostra o link de preview do homolog (como o link do workspace na VTEX) e inicia o watch.
+    # Rever o link depois: docker compose logs theme | grep -A2 PREVIEW
+    command:
+      - sh
+      - -c
+      - |
+        url=$$(nuvemshop theme preview --theme-id "$$THEME_ID_HOMOLOG" 2>/dev/null | sed 's/\x1b\[[0-9;]*m//g' | grep -Eo 'https?://[^ ]+' | tail -1)
+        echo ""
+        echo "=============================================================="
+        echo "  PREVIEW DO HOMOLOG (abra logado no admin da loja)"
+        if [ -n "$$url" ]; then
+          echo "  $$url"
+        else
+          echo "  (link indisponível — confira o login da CLI: theme/.nuvem)"
+          echo "  gerar: docker compose exec theme sh -c 'nuvemshop theme preview --theme-id \"$$THEME_ID_HOMOLOG\"'"
+        fi
+        echo "  tema: $$THEME_ID_HOMOLOG  |  cada arquivo salvo é enviado automaticamente"
+        echo "=============================================================="
+        echo ""
+        exec nuvemshop theme watch --theme-id "$$THEME_ID_HOMOLOG" --no-browser
     depends_on:
       frontend:
         condition: service_healthy

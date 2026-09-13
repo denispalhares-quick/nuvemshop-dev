@@ -142,11 +142,24 @@ Sobe três serviços:
 | `mcp` | MCP server em `http://localhost:8080/mcp` |
 
 Você edita os arquivos normalmente no seu editor. A loja **não roda local** — o Twig é renderizado pela
-Nuvemshop —, então o resultado aparece na URL de preview:
+Nuvemshop —, então o resultado aparece na **URL de preview do homolog**, que o serviço `theme` mostra no
+terminal ao subir (como o link do workspace na VTEX):
+
+```
+theme-1  | ==============================================================
+theme-1  |   PREVIEW DO HOMOLOG (abra logado no admin da loja)
+theme-1  |   https://<sualoja>.lojavirtualnuvem.com.br/?theme_installation_id=<THEME_ID_HOMOLOG>
+theme-1  |   tema: <THEME_ID_HOMOLOG>  |  cada arquivo salvo é enviado automaticamente
+theme-1  | ==============================================================
+```
+
+Com os serviços em segundo plano (`docker compose up -d`), rever o link:
 
 ```bash
-(set -a && . ./.env && cd theme && nuvemshop theme preview --theme-id "$THEME_ID_HOMOLOG")
+docker compose logs theme | grep -A2 PREVIEW
 ```
+
+O preview só abre **logado no admin**; sem login a loja mostra o tema publicado.
 
 Pré-requisitos: `.env` preenchido e `nuvemshop theme authorize` feito no host (o `theme/.nuvem` entra no
 container pelo volume). Se a CLI fizer alguma pergunta: `docker compose attach theme`.
