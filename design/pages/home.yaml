@@ -1,32 +1,177 @@
 # Home do tema — gera theme/templates/pages/home.json (frontend/compose.mjs).
 #
-# A ordem aqui é a ordem na loja. Dois tipos de item:
+# Layout: Figma "Ecommerce Website Design (Community)" — frame "Landing Page" (1:2)
+# Identidade: Quick Digital — laranja #FB4516, azul-marinho #000066 / #000033, Red Hat Display
 #
-#   - native: <id>        seção nativa do Ipanema. A config atual (Brand Editor) é mantida;
-#                         settings/blocks declarados aqui sobrescrevem só essas chaves.
-#                         Seção nova: informe `type` (ver theme/sections/<type>.tpl).
+# Enquanto a loja não tem produtos/categorias, as seções nativas mostram os placeholders do Ipanema
+# e os componentes usam cópias deles em design/assets/home/.
 #
-#   - component: <nome>   design/components/<nome>.html (HTML + Tailwind tw: + Alpine).
-#                         `settings` opcional vai para a seção "Personalizada" que envolve o HTML.
+#   - native: <id>        seção nativa do Ipanema (config do Brand Editor + overrides daqui)
+#   - component: <nome>   design/components/<nome>.html
 #
 # Imagens: "asset:<caminho>" -> design/assets/<caminho> servido pelo jsDelivr.
 
-sections:
-  - native: slideshow
-  - component: beneficios
-  - native: featured_products_1
-  - native: banners_grid_3_vertical
+unlisted: remove
 
-# Exemplo de seção nativa nova e de override de imagem:
-#
-#  - native: hero_principal
-#    type: hero
-#    settings:
-#      image: "asset:home/hero.webp"
-#      image_mobile: "asset:home/hero-mobile.webp"
-#
-#  - native: slideshow
-#    blocks:
-#      slide_1:
-#        settings:
-#          image: "asset:home/slide-1.webp"
+sections:
+  # Figma: carrossel "SMART WEARABLE." — fundo escuro, texto à esquerda, oferta abaixo
+  - native: slideshow
+    settings:
+      section_width: page
+      autoplay: true
+      autoplay_speed: 6
+      vertical_padding: 24
+    blocks:
+      slide_1:
+        settings:
+          alignment: start
+          text_color: "#FFFFFF"
+          show_overlay: true
+          overlay_color: "#000066"
+          overlay_opacity: 85
+          horizontal_padding: 64
+          link: /produtos/
+        block_order: [kicker, heading, offer, button]
+        blocks:
+          kicker:
+            type: text
+            settings:
+              text: Ofertas da semana em smartwatches
+              size: paragraph_big
+          heading:
+            settings:
+              title: Tecnologia no pulso.
+              custom_font_size: 64
+              custom_mobile_font_size: 40
+          offer:
+            type: text
+            settings:
+              text: Até 80% OFF
+              size: paragraph_big
+          button:
+            settings:
+              label: Aproveitar agora
+              link: /produtos/
+              variant: primary
+              size: medium
+      slide_2:
+        settings:
+          alignment: start
+          text_color: "#FFFFFF"
+          show_overlay: true
+          overlay_color: "#000033"
+          overlay_opacity: 85
+          horizontal_padding: 64
+          link: /produtos/
+        block_order: [heading, text, button]
+        blocks:
+          heading:
+            settings:
+              title: Performance que acelera.
+              custom_font_size: 64
+              custom_mobile_font_size: 40
+          text:
+            settings:
+              text: Acessórios com até 50% OFF
+              size: paragraph_big
+          button:
+            settings:
+              label: Ver acessórios
+              link: /produtos/
+              variant: primary
+              size: medium
+
+  # Figma: "Grab the best deal on Smartphones" — grade de 5 cards com % OFF
+  - native: featured_products_1
+    settings:
+      alignment: left
+      gap: 24
+      vertical_padding: 48
+    blocks:
+      header_group:
+        blocks:
+          heading:
+            settings:
+              title: As melhores ofertas em smartphones
+              size: h4
+          view_all_button:
+            settings:
+              label: Ver tudo
+              variant: tertiary
+      products:
+        settings:
+          format: grid
+          columns: "5"
+          columns_mobile: "2"
+          use_different_mobile_format: true
+          format_mobile: slider
+          max_products: 10
+
+  # Figma: "Shop From Top Categories" — categorias em círculos
+  - component: categorias-circulos
+
+  # Figma: "Top Electronics Brands" — 3 cartões de destaque
+  - component: destaques-marcas
+
+  # Figma: "Daily Essentials" — título + 6 cartões com imagem, nome e desconto
+  # (banners nativo aceita no máximo 4 colunas: 3 no desktop, 2 no celular)
+  - component: essenciais-titulo
+
+  - native: banners_grid_3_vertical
+    settings:
+      format: grid
+      columns: "3"
+      columns_mobile: "2"
+      banner_aspect_ratio: square
+      gap: 16
+      vertical_padding: 24
+      horizontal_padding: 0
+    blocks:
+      banner_1: &essencial
+        settings: &essencial_settings
+          text_outside: true
+          alignment: center
+          text_color: "#1F2937"
+          gap: 4
+          vertical_padding: 12
+          horizontal_padding: 0
+          link: /produtos/
+        block_order: [label, heading]
+        blocks:
+          label: { type: text, settings: { text: Mercearia, size: paragraph_small } }
+          heading: { settings: { title: Até 50% OFF, size: h6 } }
+      banner:
+        settings: *essencial_settings
+        block_order: [label, heading]
+        blocks:
+          label: { type: text, settings: { text: Hortifrúti, size: paragraph_small } }
+          heading: { settings: { title: Até 40% OFF, size: h6 } }
+      banner_3:
+        type: banner
+        settings: *essencial_settings
+        block_order: [label, heading]
+        blocks:
+          label: { type: text, settings: { text: Frutas, size: paragraph_small } }
+          heading: { type: heading, settings: { title: Até 50% OFF, size: h6 } }
+      banner_4:
+        type: banner
+        settings: *essencial_settings
+        block_order: [label, heading]
+        blocks:
+          label: { type: text, settings: { text: Bebidas, size: paragraph_small } }
+          heading: { type: heading, settings: { title: Até 30% OFF, size: h6 } }
+      banner_5:
+        type: banner
+        settings: *essencial_settings
+        block_order: [label, heading]
+        blocks:
+          label: { type: text, settings: { text: Padaria, size: paragraph_small } }
+          heading: { type: heading, settings: { title: Até 25% OFF, size: h6 } }
+      banner_6:
+        type: banner
+        settings: *essencial_settings
+        block_order: [label, heading]
+        blocks:
+          label: { type: text, settings: { text: Congelados, size: paragraph_small } }
+          heading: { type: heading, settings: { title: Até 50% OFF, size: h6 } }
+    block_order: [banner_1, banner, banner_3, banner_4, banner_5, banner_6]

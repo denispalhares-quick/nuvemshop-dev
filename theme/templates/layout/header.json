@@ -7,7 +7,8 @@
       "settings": {
         "section_width": "full",
         "horizontal_padding": 32,
-        "background_color": "#000000"
+        "background_color": "#000066",
+        "text_color": "#FFFFFF"
       },
       "blocks": {
         "nav_icon_text": {
@@ -22,7 +23,7 @@
               "settings": {
                 "icon_source": "design",
                 "icon": "shipping",
-                "description": "Seu texto aqui"
+                "description": "Frete grátis acima de R$ 299"
               }
             },
             "item_2": {
@@ -30,7 +31,7 @@
               "settings": {
                 "icon_source": "design",
                 "icon": "card",
-                "description": "Seu texto aqui"
+                "description": "Até 6x sem juros no cartão"
               }
             }
           },
@@ -47,7 +48,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo_position_desktop": "center",
+        "logo_position_desktop": "left",
         "section_width": "full",
         "vertical_padding": 12,
         "horizontal_padding": 40,
@@ -55,7 +56,7 @@
         "vertical_padding_mobile": 16,
         "horizontal_padding_mobile": 28,
         "background_color": "#FFFFFF",
-        "text_color": "#000000"
+        "text_color": "#000066"
       },
       "blocks": {
         "logo": {
@@ -77,7 +78,7 @@
         "navigation": {
           "type": "header-navigation",
           "settings": {
-            "nav_uppercase": true,
+            "nav_uppercase": false,
             "show_categories_link": false,
             "show_mobile_categories": false,
             "nav_alignment_desktop": "center",
