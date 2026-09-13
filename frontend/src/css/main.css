@@ -63,3 +63,57 @@
   margin-left: 0;
   margin-right: 0;
 }
+
+/* Cabeçalho em uma linha só no desktop: logo | menu | ícones.
+   O Ipanema renderiza .head-row (logo + ícones) e .nav-desktop-container (menu) como
+   linhas irmãs dentro de .head-main. Sem fork não dá para mudar o HTML, então a
+   .head-row vira display: contents e logo, menu e ícones passam a ser itens de uma
+   única linha flex em .head-main, limitada à largura da página (mesma do .container).
+   Vale só com "Largura: página" + "Logo à esquerda"; celular fica como o tema faz.
+   Dropdowns são position: fixed e posicionados pelo JS do tema — não dependem disto. */
+@media (min-width: 768px) {
+  .head-main:has(> .head-row.container.logo-md-left) {
+    --qd-header-width: 720px;
+    display: flex;
+    align-items: center;
+    column-gap: var(--utility-items-gap, var(--spacing-4));
+    padding-top: var(--header-vertical-padding);
+    padding-bottom: var(--header-vertical-padding);
+    padding-left: calc((100% - var(--qd-header-width)) / 2 + var(--gutter-container));
+    padding-right: calc((100% - var(--qd-header-width)) / 2 + var(--gutter-container));
+  }
+  .head-main:has(> .head-row.container.logo-md-left) > .head-row {
+    display: contents;
+  }
+  .head-main:has(> .head-row.container.logo-md-left) .logo-container {
+    order: 0;
+    flex: 0 0 auto;
+  }
+  .head-main:has(> .head-row.container.logo-md-left) > .nav-desktop-container {
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    border-top: 0;
+    background-color: transparent;
+  }
+  .head-main:has(> .head-row.container.logo-md-left) > .nav-desktop-container > .nav-desktop-grid {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .head-main:has(> .head-row.container.logo-md-left) .search-container,
+  .head-main:has(> .head-row.container.logo-md-left) .utilities-language-desktop,
+  .head-main:has(> .head-row.container.logo-md-left) .header-account,
+  .head-main:has(> .head-row.container.logo-md-left) .header-cart {
+    order: 2;
+  }
+}
+@media (min-width: 992px) {
+  .head-main:has(> .head-row.container.logo-md-left) { --qd-header-width: min(var(--page-width), 960px); }
+}
+@media (min-width: 1200px) {
+  .head-main:has(> .head-row.container.logo-md-left) { --qd-header-width: min(var(--page-width), 1140px); }
+}
+@media (min-width: 1400px) {
+  .head-main:has(> .head-row.container.logo-md-left) { --qd-header-width: var(--page-width); }
+}

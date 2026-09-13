@@ -79,15 +79,16 @@
           "type": "header-navigation",
           "settings": {
             "nav_uppercase": false,
-            "show_categories_link": true,
+            "show_categories_link": false,
             "show_mobile_categories": false,
             "nav_alignment_desktop": "left",
             "vertical_padding": 14,
             "nav_divider_color": "transparent",
-            "show_secondary_menu": true,
+            "show_secondary_menu": false,
             "show_featured_link": true,
             "featured_link_item": "Contato",
-            "featured_link_color": "#fb4516"
+            "featured_link_color": "#fb4516",
+            "menu": "submenu"
           },
           "blocks": [],
           "block_order": []
@@ -98,62 +99,10 @@
         "utilities",
         "navigation"
       ]
-    },
-    "navigation-bar_1789259248454": {
-      "type": "navigation-bar",
-      "settings": {
-        "mobile_placement": "header",
-        "section_width": "page",
-        "item_gap": 32,
-        "vertical_padding": 8,
-        "horizontal_padding": 32,
-        "background_color": "#000066",
-        "text_color": "#FFFFFF",
-        "_custom_name": "Dropdown Menu"
-      },
-      "blocks": {
-        "nav-announcements_7qvo": {
-          "type": "nav-announcements",
-          "settings": {
-            "alignment": "left",
-            "gap": 16
-          },
-          "blocks": {
-            "announcement_0lgh": {
-              "type": "announcement",
-              "settings": {
-                "text": "Envio para todo o país"
-              }
-            },
-            "announcement_d09e": {
-              "type": "announcement",
-              "settings": {
-                "text": "Até 12 parcelas"
-              }
-            }
-          },
-          "block_order": [
-            "announcement_0lgh",
-            "announcement_d09e"
-          ]
-        },
-        "nav-social_btcm": {
-          "type": "nav-social",
-          "settings": {
-            "alignment": "right",
-            "gap": 16
-          }
-        }
-      },
-      "block_order": [
-        "nav-announcements_7qvo",
-        "nav-social_btcm"
-      ]
     }
   },
   "order": [
     "navigation_bar",
-    "header",
-    "navigation-bar_1789259248454"
+    "header"
   ]
 }
