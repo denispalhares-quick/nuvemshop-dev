@@ -249,14 +249,14 @@ Imagens: coluna `Imagens` (URLs), pasta local (`<handle>.jpg`, `<SKU>.png`) ou `
 
 O checkout é hospedado pela Nuvemshop — o tema só influencia **cores e fontes** (via
 `static/checkout.scss.tpl`, que lê os settings). Para colocar **UI** no checkout, o caminho oficial é um
-app **NubeSDK**, em [`nube-apps/`](nube-apps/frete-gratis/README.md):
+app **NubeSDK**, em [`nube-apps/`](nube-apps/checkout-quick/README.md):
 
 | App | O que faz |
 |---|---|
-| [`frete-gratis`](nube-apps/frete-gratis/README.md) | barra "faltam R$ X para frete grátis" abaixo dos totais, na identidade Quick |
+| [`checkout-quick`](nube-apps/checkout-quick/README.md) | layout do checkout num script só: faixa de benefícios, barra de frete grátis, selos de pagamento, rodapé de ajuda e pós-compra — identidade Quick |
 
 ```bash
-cd nube-apps/frete-gratis && npm install && npm test && npm run build   # -> dist/main.min.js
+cd nube-apps/checkout-quick && npm install && npm test && npm run build   # -> dist/main.min.js
 ```
 
 Publicação é no **portal de parceiros** (script de checkout com "Uses NubeSDK"). CI:

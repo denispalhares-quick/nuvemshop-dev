@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [frete-gratis]
+        app: [checkout-quick]
     defaults:
       run:
         working-directory: nube-apps/${{ matrix.app }}

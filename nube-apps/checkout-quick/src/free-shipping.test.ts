@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_THRESHOLD, eligibleAmount, formatMoney, freeShippingStatus, readThreshold } from "./free-shipping";
+import { eligibleAmount, formatMoney, freeShippingStatus } from "./free-shipping";
 
 describe("eligibleAmount", () => {
 	it("desconta promoção e cupom, ignora frete e gateway", () => {
@@ -25,18 +25,6 @@ describe("freeShippingStatus", () => {
 	});
 	it("arredonda centavos (0.1 + 0.2)", () => {
 		expect(freeShippingStatus(0.1 + 0.2, 1).remaining).toBe(0.7);
-	});
-});
-
-describe("readThreshold", () => {
-	it("usa a configuração do app (número ou texto)", () => {
-		expect(readThreshold({ free_shipping_threshold: 199 })).toBe(199);
-		expect(readThreshold({ free_shipping_threshold: "249,90" })).toBe(249.9);
-	});
-	it("cai no padrão quando ausente ou inválido", () => {
-		expect(readThreshold(undefined)).toBe(DEFAULT_THRESHOLD);
-		expect(readThreshold({ free_shipping_threshold: "abc" })).toBe(DEFAULT_THRESHOLD);
-		expect(readThreshold({ free_shipping_threshold: -5 })).toBe(DEFAULT_THRESHOLD);
 	});
 });
 

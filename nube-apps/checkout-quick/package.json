@@ -1,8 +1,8 @@
 {
-	"name": "nube-frete-gratis",
+	"name": "nube-checkout-quick",
 	"version": "0.1.0",
 	"private": true,
-	"description": "App NubeSDK: barra de progresso de frete grátis no checkout (identidade Quick Digital)",
+	"description": "App NubeSDK: layout do checkout na identidade Quick Digital (faixa, frete grátis, pagamento, rodapé, pós-compra)",
 	"type": "module",
 	"scripts": {
 		"dev": "concurrently -k -n BUILD,SERVE -c blue,green \"tsup --sourcemap inline --watch\" \"serve dist -l 8080 --cors\"",
