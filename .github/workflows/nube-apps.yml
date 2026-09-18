@@ -1,0 +1,36 @@
+name: Apps NubeSDK — typecheck, testes e build
+
+on:
+  pull_request:
+    paths: ["nube-apps/**", ".github/workflows/nube-apps.yml"]
+  push:
+    branches: [main]
+    paths: ["nube-apps/**", ".github/workflows/nube-apps.yml"]
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [frete-gratis]
+    defaults:
+      run:
+        working-directory: nube-apps/${{ matrix.app }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: nube-apps/${{ matrix.app }}/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      # o main.min.js é o arquivo enviado no portal de parceiros (Apps > seu app > Scripts)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nube-${{ matrix.app }}
+          path: nube-apps/${{ matrix.app }}/dist/main.min.js
+          if-no-files-found: error

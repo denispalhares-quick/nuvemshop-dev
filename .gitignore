@@ -20,3 +20,6 @@ theme/static/js/app.js.map
 
 # relatórios do python3 -m catalog import (gerados a cada execução)
 catalog/reports/
+
+# apps NubeSDK: o build (dist/main.min.js) é gerado pelo CI/npm run build
+nube-apps/*/dist/

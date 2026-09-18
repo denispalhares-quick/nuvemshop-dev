@@ -245,6 +245,23 @@ python3 -m catalog import produtos.csv --apply --images-dir fotos/    # importa 
 
 Imagens: coluna `Imagens` (URLs), pasta local (`<handle>.jpg`, `<SKU>.png`) ou `--placeholder-images`.
 
+## Checkout (apps NubeSDK)
+
+O checkout é hospedado pela Nuvemshop — o tema só influencia **cores e fontes** (via
+`static/checkout.scss.tpl`, que lê os settings). Para colocar **UI** no checkout, o caminho oficial é um
+app **NubeSDK**, em [`nube-apps/`](nube-apps/frete-gratis/README.md):
+
+| App | O que faz |
+|---|---|
+| [`frete-gratis`](nube-apps/frete-gratis/README.md) | barra "faltam R$ X para frete grátis" abaixo dos totais, na identidade Quick |
+
+```bash
+cd nube-apps/frete-gratis && npm install && npm test && npm run build   # -> dist/main.min.js
+```
+
+Publicação é no **portal de parceiros** (script de checkout com "Uses NubeSDK"). CI:
+`.github/workflows/nube-apps.yml`.
+
 ## Frontend
 
 O tema **não** é só HTML/CSS/JS: a Nuvemshop roda **Twig** e compila **SASS** no servidor. O build local cobre só a parte estática.
