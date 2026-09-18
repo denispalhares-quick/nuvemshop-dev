@@ -17,3 +17,6 @@ frontend/node_modules/
 theme/static/css/tailwind.css
 theme/static/js/app.js
 theme/static/js/app.js.map
+
+# relatórios do python3 -m catalog import (gerados a cada execução)
+catalog/reports/
