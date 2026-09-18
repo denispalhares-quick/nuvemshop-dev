@@ -8,8 +8,6 @@
  */
 import type { CurrencyDetails, Prices } from "@tiendanube/nube-sdk-types";
 
-export const DEFAULT_THRESHOLD = 299;
-
 export type FreeShippingStatus = {
 	/** Valor considerado para o frete grátis. */
 	base: number;
@@ -36,16 +34,6 @@ export function freeShippingStatus(base: number, threshold: number): FreeShippin
 		progress: Math.min(100, Math.round((base / threshold) * 100)),
 		reached: remaining === 0,
 	};
-}
-
-/**
- * Lê o valor mínimo das configurações do app (`free_shipping_threshold`), aceitando
- * número ou texto ("299", "299,90"). Inválido/ausente -> padrão.
- */
-export function readThreshold(settings: unknown, fallback = DEFAULT_THRESHOLD): number {
-	const raw = (settings as Record<string, unknown> | null | undefined)?.free_shipping_threshold;
-	const value = typeof raw === "number" ? raw : typeof raw === "string" ? Number(raw.replace(",", ".")) : Number.NaN;
-	return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
 /** 1234.5 -> "R$ 1.234,50" usando as regras de moeda da loja (padrão: BRL). */
