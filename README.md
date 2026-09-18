@@ -232,6 +232,19 @@ Daí em diante vale o [fluxo de tema](#fluxo-de-tema-git--loja). Detalhes do fro
 
 ---
 
+## Catálogo (produtos, categorias e imagens)
+
+O módulo [`catalog/`](catalog/README.md) sobe o catálogo a partir do CSV de importação/exportação da
+Nuvemshop — categorias (inclusive `Pai > Filho`), produtos com variações e imagens, respeitando o rate
+limit da API. Padrão é **dry-run**; só grava com `--apply`. Rodar de novo não duplica.
+
+```bash
+python3 -m catalog import produtos.csv                                # plano
+python3 -m catalog import produtos.csv --apply --images-dir fotos/    # importa com fotos locais
+```
+
+Imagens: coluna `Imagens` (URLs), pasta local (`<handle>.jpg`, `<SKU>.png`) ou `--placeholder-images`.
+
 ## Frontend
 
 O tema **não** é só HTML/CSS/JS: a Nuvemshop roda **Twig** e compila **SASS** no servidor. O build local cobre só a parte estática.
